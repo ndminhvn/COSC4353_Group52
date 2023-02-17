@@ -1,0 +1,52 @@
+#home {
+    position: relative;
+    overflow: hidden;
+    /* border: 2px solid red; */
+    padding: 10px;
+    text-align: center;
+    top: 130px;
+    /* background: rgba(0, 0, 0, 0.3); */
+}
+
+.btn-group {
+    /* border: 1px solid blue; */
+    margin-top: 75px;
+}
+
+#rate-btn {
+    background-color: rgb(187, 196, 226);
+    border: none;
+    border-radius: 24px;
+    /* font-family: 'Akaya Kanadaka'; */
+    font-family: 'Playfair Display', serif;
+    /* font-family: "Helvetica Neue",sans-serif; */
+    color: rgb(34, 29, 29);
+    font-weight: bolder;
+    padding: 2.5px 24px;
+    margin-bottom: 6%;
+    font-size: 25px;
+    letter-spacing: 0.3rem;
+    cursor: pointer;
+    display: inline-flex;
+    overflow: hidden;
+    width: auto;
+    max-width: 500px;
+    -webkit-transition: max-width 0.5s;
+    transition: max-width 0.5s;
+}
+
+#rate-btn:hover {
+    /* width: 1em; */
+    max-width: 700px;
+    box-shadow: 5px 5px 10px #888888;
+}
+
+#arrow-icon {
+    display: none;
+    visibility: hidden;
+}
+
+#rate-btn:hover > #arrow-icon {
+    display: inline;
+    visibility: visible;
+}
