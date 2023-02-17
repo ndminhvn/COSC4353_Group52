@@ -1,10 +1,14 @@
-import React from 'react'
-import UserAuthForm from '../../components/Forms/UserAuthForm'
+import UserAuthForm from '../../components/Forms/UserAuthForm';
+
+import './Login.css';
 
 const Login = () => {
   return (
-    <div>Login</div>
-  )
+    <div>
+      {/* <img src={bgImage} alt='bgImage' id='loginBg' /> */}
+      <UserAuthForm />
+    </div>
+  );
 }
-
-export default Login
+  
+export default Login;
