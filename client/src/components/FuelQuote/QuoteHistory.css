@@ -1,0 +1,12 @@
+.table {
+    margin: 0 auto;
+    border: 2px solid darkgray;
+    width: 85%;
+}
+
+caption {
+    color: black;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 25px;
+    text-shadow: 1px 1px 2px lightgrey;
+}
