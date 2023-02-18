@@ -18,6 +18,7 @@ export default function QuoteHistory() {
             .then(res => res.json())
             .then(data => setQuotes(data));
     }, []);
+    
     return (
         <>
             <div className="quote-history-container md-5">
