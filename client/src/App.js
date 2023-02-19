@@ -7,7 +7,7 @@ const Navbar = lazy(() => import('./components/Navbar/Navbar'));
 const Home = lazy(() => import('./pages/Home/Home'));
 const Login = lazy(() => import('./pages/Login/Login'));
 const QuoteHistory = lazy(() => import('./components/FuelQuote/QuoteHistory'));
-const FuelQuoteForm = lazy(() => import('./components/Forms/FuelQuoteForm'));
+const Quote = lazy(() => import('./pages/Quote/Quote'));
 
 const App = () => {
   return (
@@ -19,7 +19,7 @@ const App = () => {
           <Route path='/login' element={<Login />} />
           <Route path='/history' element={<QuoteHistory />} />
           <Route path='*' element={<Page404 />} />
-          <Route path='/quote' element={<FuelQuoteForm/>}/>
+          <Route path='/quote' element={<Quote/>}/>
         </Routes>
       </Suspense>
     </Router>
