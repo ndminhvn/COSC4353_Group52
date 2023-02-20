@@ -18,8 +18,8 @@ const App = () => {
           <Route path='/' index element={<Home />} />
           <Route path='/login' element={<Login />} />
           <Route path='/history' element={<QuoteHistory />} />
-          <Route path='*' element={<Page404 />} />
           <Route path='/quote' element={<Quote/>}/>
+          <Route path='*' element={<Page404 />} />
         </Routes>
       </Suspense>
     </Router>

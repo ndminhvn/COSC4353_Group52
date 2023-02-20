@@ -14,7 +14,7 @@ const Home = () => {
         <Typography>Click the button below and we will get the best rate for you!</Typography>
       </div>
       <div className='h-50 d-flex flex-column align-items-center justify-content-around btn-group'>
-        <Button variant='contained' href='/rate' id='rate-btn' className='mb-5' size='lg'>
+        <Button variant='contained' href='/quote' id='rate-btn' className='mb-5' size='lg'>
             Get the Quote today!
             <ArrowForwardIcon id='arrow-icon' sx={{ mr: 1 }} />
         </Button>

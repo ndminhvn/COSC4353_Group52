@@ -39,7 +39,7 @@ const NavBar = () => {
 
 			<Navbar.Collapse className='justify-content-end'>
 				<Nav>
-					<Link href='/rate' className='nav-link' color='black' underline='none'>Rate Predictor</Link>
+					<Link href='/quote' className='nav-link' color='black' underline='none'>Rate Predictor</Link>
 					{(!token) ? 
 						<Link href='/login' className='nav-link' color='black' underline='none'>Login</Link>
 						: 
