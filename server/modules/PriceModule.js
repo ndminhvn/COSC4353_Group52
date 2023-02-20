@@ -1,4 +1,4 @@
-class PriceModule {
+export class PriceModule {
 
     constructor(state, hasHistory, gallonsRequested){
 
