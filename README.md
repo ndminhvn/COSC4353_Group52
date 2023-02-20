@@ -39,4 +39,6 @@ Will fill in the description
   - Backend:
     - Go to server folder: `cd server`
     - Install dependencies: `npm install`
+    - Create a new `.env` file: `cp .env.development .env`
+    - Fill in the `.env` file
     - Start server: `npm start`

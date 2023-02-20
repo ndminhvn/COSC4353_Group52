@@ -1,8 +1,10 @@
-import React from 'react';
+import React, {useState, useEffect } from 'react';
+import { BASE_URL } from '../../utils/constants.js';
+
 import './QuoteHistory.css';
 
-export default function QuoteHistory() {
-    // const [quotes, setQuotes] = React.useState([{
+const QuoteHistory = () => {
+    // const [quotes, setQuotes] = useState([{
     //     order_date: "02/10/2023",
     //     gallons_requested: 1500,
     //     address_1: '123 Main Street, Houston, TX',
@@ -11,10 +13,10 @@ export default function QuoteHistory() {
     //     total_amount_due: '$1.695'
     // }]);
 
-    const [quotes, setQuotes] = React.useState([]);
+    const [quotes, setQuotes] = useState([]);
 
-    React.useEffect(() => {
-        fetch('http://localhost:3001/getquotes')
+    useEffect(() => {
+        fetch(`${BASE_URL}/getquotes`)
             .then(res => res.json())
             .then(data => setQuotes(data));
     }, []);
@@ -91,3 +93,5 @@ export default function QuoteHistory() {
         </>
     );
 }
+
+export default QuoteHistory;
