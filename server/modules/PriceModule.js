@@ -1,6 +1,7 @@
 class PriceModule {
 
     constructor(state, hasHistory, gallonsRequested){
+
         // 2% for Texas, 4% for out-of-state
         this.locationFactor = 'TX' === state ? 0.02 : 0.04;
         // 1% if the client requested fuel before, 0% if no history
@@ -14,6 +15,7 @@ class PriceModule {
     }
 
     getQuote(){
+
         let margin = this.crudePrice *
         ( 
             this.locationFactor 
