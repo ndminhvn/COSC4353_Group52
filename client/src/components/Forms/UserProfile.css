@@ -1,3 +1,11 @@
-.container {
-  width: 60%;
-} 
+.error {
+  color: #fc8181;
+  font-size: 0.75rem;
+  text-align: left;
+  margin-top: 0.25rem;
+}
+
+input.input-error,
+select.input-error {
+  border-color: #fc8181;
+}

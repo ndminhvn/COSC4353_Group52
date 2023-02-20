@@ -19,7 +19,7 @@ const App = () => {
           <Route path='/' index element={<Home />} />
           <Route path='/login' element={<Login />} />
           <Route path='/history' element={<QuoteHistory />} />
-          <Route path='/profile' element={<Profile />} />
+          <Route path='/account' element={<Profile />} />
           <Route path='/quote' element={<Quote />} />
           <Route path='*' element={<Page404 />} />
         </Routes>
