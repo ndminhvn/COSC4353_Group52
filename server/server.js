@@ -1,7 +1,21 @@
 const express = require('express');
 const app = express();
-const PORT = 8000;
+
+//Load dotenv
+require("dotenv").config();
+const PORT = process.env.PORT || 6000;
+
+//CORS config
+const cors = require('cors');
+
+//Routes
+app.use("/login", require("./routes/Login"));
+app.use("/register", require("./routes/Register"));
+app.use("/history", require("./routes/FuelHistory"));
+app.use("/account", require("./routes/Account")); 
+app.use("/quote", require("./routes/FuelQuote"));
+
 
 app.listen(PORT, () => {
-    console.log("Server Running...");
+    console.log(`Server running on port ${PORT}`);
 })
