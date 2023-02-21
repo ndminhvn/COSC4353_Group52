@@ -11,11 +11,13 @@ const FuelQuoteForm = () => {
     date.setDate(date.getDate() + 3);
 
     return (
-        <div>
+        <div className="container">
             <form>
-                <div class="form-group row">
-                    <label for="datePicker" class="col-sm-2 col-form-label">Date</label>
-                    <div class="col-sm-10">
+                <div className="row">
+                    <div className="col-25">
+                        <label for="DatePicker">Date</label>
+                    </div>
+                    <div className="col-75">
                         <DatePicker
                             selected={selectedDate}
                             onChange={newDate => setSelectedDate(newDate)}
@@ -27,13 +29,14 @@ const FuelQuoteForm = () => {
                         />
                     </div>
                 </div>
-
-                <div class="form-group row">
-                    <label for="requestAmount" class="col-sm-2 col-form-label">Enter the # of gallons</label>
-                    <div class="col-sm-10">
+                <div className="row">
+                    <div className="col-25">
+                        <label for="requestAmount">Enter number of gallons</label>
+                    </div>
+                    <div className="col-25">
                         <input
                             type="number"
-                            class="col-sm-2"
+                            className="col-50"
                             id="requestAmount"
                             placeholder="Minimum of 100 gallons"
                             min="100"
@@ -41,9 +44,11 @@ const FuelQuoteForm = () => {
                     </div>
                 </div>
 
-                <div class="form-group row">
-                    <label for="staticAddress" class="col-sm-2 col-form-label">Address</label>
-                    <div class="col-sm-10">
+                <div className="row">
+                    <div className="col-25">
+                        <label for="staticAddress">Address</label>
+                    </div>
+                    <div className="col-75">
                         <input
                             type="text"
                             readonly class="form-control-plaintext"
@@ -52,9 +57,11 @@ const FuelQuoteForm = () => {
                     </div>
                 </div>
 
-                <div class="form-group row">
-                    <label for="staticPrice" class="col-sm-2 col-form-label">Estimated Price</label>
-                    <div class="col-sm-10">
+                <div className="row">
+                    <div className="col-25">
+                        <label for="staticPrice" >Estimated Price</label>
+                    </div>
+                    <div className="col-75">
                         <input
                             type="text"
                             readonly class="form-control-plaintext"
