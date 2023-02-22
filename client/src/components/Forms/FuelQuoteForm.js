@@ -13,6 +13,8 @@ const FuelQuoteForm = () => {
     return (
         <div className="container">
             <form>
+
+                {/* Date Picker */}
                 <div className="row">
                     <div className="col-25">
                         <label for="DatePicker">Date</label>
@@ -29,6 +31,8 @@ const FuelQuoteForm = () => {
                         />
                     </div>
                 </div>
+
+                {/* Enter gallons field */}
                 <div className="row">
                     <div className="col-25">
                         <label for="requestAmount">Enter number of gallons</label>
@@ -44,6 +48,7 @@ const FuelQuoteForm = () => {
                     </div>
                 </div>
 
+                {/* Non-editable address */}
                 <div className="row">
                     <div className="col-25">
                         <label for="staticAddress">Address</label>
@@ -57,6 +62,7 @@ const FuelQuoteForm = () => {
                     </div>
                 </div>
 
+                {/* Non-editable price */}
                 <div className="row">
                     <div className="col-25">
                         <label for="staticPrice" >Estimated Price</label>
@@ -70,7 +76,23 @@ const FuelQuoteForm = () => {
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary mb-2">Confirm Quote</button>
+                {/* Non-editable price per gallon */}
+                <div className="row">
+                    <div className="col-25">
+                        <label for="staticPricePerGallon" >Per gallon cost</label>
+                    </div>
+                    <div className="col-75">
+                        <input
+                            type="text"
+                            readonly class="form-control-plaintext"
+                            id="staticPricePerGallon"
+                            value="$1.76 per gallon" />
+                    </div>
+                </div>
+
+                {/* Request button -> confirm button */}
+                <button type="submit" class="btn btn-primary mb-2">Request Quote</button>
+
 
             </form>
         </div>
