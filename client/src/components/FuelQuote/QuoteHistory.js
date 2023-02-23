@@ -1,25 +1,18 @@
 import React, {useState, useEffect } from 'react';
 import { BASE_URL } from '../../utils/constants.js';
+import fuelQuoteHistory from './mock-fqhistory.json';
 
 import './QuoteHistory.css';
 
 const QuoteHistory = () => {
-    // const [quotes, setQuotes] = useState([{
-    //     order_date: "02/10/2023",
-    //     gallons_requested: 1500,
-    //     address_1: '123 Main Street, Houston, TX',
-    //     delivery_date: '02/11/2023',
-    //     suggested_price: '$1.695',
-    //     total_amount_due: '$1.695'
-    // }]);
-
-    const [quotes, setQuotes] = useState([]);
+    const [quotes, setQuotes] = useState(fuelQuoteHistory);
 
     useEffect(() => {
         fetch(`${BASE_URL}/getquotes`)
             .then(res => res.json())
             .then(data => setQuotes(data));
     }, []);
+    
     return (
         <>
             <div className="quote-history-container md-5">
@@ -36,17 +29,17 @@ const QuoteHistory = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {/* {quotes.map((quote, idx) => (
+                        {quotes.map((quote, idx) => (
                             <tr key={idx}>
-                                <td>{quote.order_date}</td>
-                                <td>{quote.gallons_requested}</td>
-                                <td>{quote.address_1}</td>
-                                <td>{quote.delivery_date}</td>
-                                <td>${quote.suggested_price}</td>
-                                <td>${quote.total_amount_due}</td>
+                                <td>{quote.orderDate}</td>
+                                <td>{quote.gallonsRequested}</td>
+                                <td>{quote.deliveryAddress}</td>
+                                <td>{quote.deliveryDate}</td>
+                                <td>${(quote.suggestedPPG).toFixed(2)}</td>
+                                <td>${(quote.totalDue).toFixed(2)}</td>
                             </tr>
-                        ))} */}
-                        <tr >
+                        ))}
+                        {/* <tr >
                             <td>01/20/2023</td>
                             <td>900</td>
                             <td>4414 My Drive, Garden City, NY</td>
@@ -85,10 +78,10 @@ const QuoteHistory = () => {
                             <td>02/05/2023</td>
                             <td>${(1.50 + (.02 - .01 + .03 + .1)).toFixed(2)}</td>
                             <td>${(1.50 + (.02 - .01 + .03 + .1))*651}</td>
-                        </tr>
+                        </tr> */}
                     </tbody>
+                    {quotes.length === 0 && <p className="ps-2 m-auto">No History</p>}
                 </table>
-                {/* {quotes.length === 0 && <p>No history</p>} */}
             </div>
         </>
     );
