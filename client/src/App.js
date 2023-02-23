@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Suspense, lazy } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Page404 from './components/404/Page404';
+// import './App.css';
 
-function App() {
+const Navbar = lazy(() => import('./components/Navbar/Navbar'));
+const Home = lazy(() => import('./pages/Home/Home'));
+const Login = lazy(() => import('./pages/Login/Login'));
+const QuoteHistory = lazy(() => import('./components/FuelQuote/QuoteHistory'));
+const Profile = lazy(() => import('./pages/Profile/Profile'))
+const Quote = lazy(() => import('./pages/Quote/Quote'));
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Suspense>
+        <Navbar />
+        <Routes>
+          <Route path='/' index element={<Home />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/history' element={<QuoteHistory />} />
+          <Route path='/account' element={<Profile />} />
+          <Route path='/quote' element={<Quote />} />
+          <Route path='*' element={<Page404 />} />
+        </Routes>
+      </Suspense>
+    </Router>
   );
 }
 
