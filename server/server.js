@@ -1,14 +1,16 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
+require("dotenv").config();
 
 //Load dotenv
-require("dotenv").config();
 const PORT = process.env.PORT || 6000;
 
 //CORS config
-const cors = require('cors');
+app.use(cors());
 
 //Routes
+app.use("/", require("./routes/Index"));
 app.use("/login", require("./routes/Login"));
 app.use("/register", require("./routes/Register"));
 app.use("/history", require("./routes/FuelHistory"));
