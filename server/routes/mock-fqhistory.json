@@ -11,7 +11,7 @@
         {
             "orderDate": "01/24/2023",
             "gallonsRequested": 1500,
-            "deliveryAddress": "123 Main Street, Houston, TXY",
+            "deliveryAddress": "123 Main Street, Houston, TX",
             "deliveryDate": "01/25/2023",
             "suggestedPPG": 1.70,
             "totalDue": 2542.50
@@ -43,7 +43,7 @@
         {
             "orderDate": "02/02/2023",
             "gallonsRequested": 1500,
-            "deliveryAddress": "123 Main Street, Houston, TXY",
+            "deliveryAddress": "123 Main Street, Houston, TX",
             "deliveryDate": "02/05/2023",
             "suggestedPPG": 1.70,
             "totalDue": 2542.50
