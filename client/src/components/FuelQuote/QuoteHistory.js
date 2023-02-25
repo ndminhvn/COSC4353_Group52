@@ -1,17 +1,26 @@
 import React, {useState, useEffect } from 'react';
 import { BASE_URL } from '../../utils/constants.js';
-import fuelQuoteHistory from './mock-fqhistory.json';
+import axios from 'axios';
 
 import './QuoteHistory.css';
 
 const QuoteHistory = () => {
-    const [quotes, setQuotes] = useState(fuelQuoteHistory);
+    const [quotes, setQuotes] = useState([]);
 
+    const getHistory = async () => {
+        axios.get(`${BASE_URL}/history`)
+        .then(res => {
+            const quoteHistory = res.data.history;
+            // console.log(quoteHistory);
+            setQuotes(quoteHistory);
+        }).catch(error => {
+            console.error(error);
+        });
+    }
+    
     useEffect(() => {
-        fetch(`${BASE_URL}/getquotes`)
-            .then(res => res.json())
-            .then(data => setQuotes(data));
-    }, []);
+        getHistory();
+    },[]);
     
     return (
         <>
