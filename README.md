@@ -44,3 +44,4 @@ Will fill in the description
     - Create a new `.env` file: `cp .env.development .env`
     - Fill in the `.env` file
     - Start server: `npm start`
+    - Start unit-test: `npm test`

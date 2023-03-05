@@ -1,4 +1,4 @@
-export class PriceModule {
+class PriceModule {
 
     constructor(state, hasHistory, gallonsRequested){
 
@@ -12,11 +12,13 @@ export class PriceModule {
         this.profitFactor = 0.1;
         // $1.50 always
         this.crudePrice = 1.50;
+        // amount requested
+        this.gallonsRequested = gallonsRequested;
     }
 
     getQuote(){
 
-        let margin = this.crudePrice *
+        this.margin = this.crudePrice *
         ( 
             this.locationFactor 
             - this.historyFactor 
@@ -24,7 +26,9 @@ export class PriceModule {
             + this.profitFactor
         )
 
-        let price = this.crudePrice + margin;
+        let price = (this.crudePrice + this.margin) * this.gallonsRequested;
         return price;
     }
 }
+
+module.exports = PriceModule;
