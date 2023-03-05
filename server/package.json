@@ -68,7 +68,6 @@
     "start": "node server.js",
     "test": "jest --watchAll --verbose --coverage"
   },
-  "type": "module",
   "author": "Team 52",
   "license": "ISC"
 }
