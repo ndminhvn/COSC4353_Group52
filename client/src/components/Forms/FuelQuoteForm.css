@@ -37,7 +37,7 @@ button {
     font-size: 15px;
     font-weight: bold;
     border: #99aae3;
-    transition: all 0.5s;
+    transition: all .5s;
     width: 100%;
 }
 
@@ -52,7 +52,7 @@ button:disabled {
 
 .container {
     align-self: center;
-    box-shadow: 0px 0px 10px black;
+    box-shadow: 0px 0px 10px darkgrey;
     background-color: #e6e9edcc;
     overflow: hidden;
     margin-bottom: auto;
@@ -60,6 +60,11 @@ button:disabled {
     margin-left: 10px;
     padding-bottom: 10px;
     border-radius: 10px;
+}
+
+.container:hover {
+    box-shadow: 2px 2px 15px rgb(89, 89, 89);
+    transition: all .2s;
 }
 
 .form-container {
