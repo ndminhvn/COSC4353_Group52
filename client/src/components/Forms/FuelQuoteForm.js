@@ -141,29 +141,6 @@ const FuelQuoteForm = (props) => {
         const mergedData = { ...profile, ...quote, username };
 
         console.log("submit mergedData:", mergedData);
-
-        // await axios.post(`/quote`, {
-        //     username,
-        //     address1: profile.address1,
-        //     city: profile.city,
-        //     state: profile.state,
-        //     zipcode: profile.zipcode,
-        //     gallons,
-        //     selectedDate,
-        //     price: quote.price,
-        //     due: quote.due,
-        // }, {
-        //     headers: {
-        //         Authorization: token
-        //     }
-        // })
-        //     .then(response => { })
-        //     .catch(error => {
-        //         console.log(error);
-        //         navigate('/quote')
-        //     });
-
-        // navigate('/history')
     }
 
     useEffect(() => {
