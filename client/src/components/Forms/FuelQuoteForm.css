@@ -11,11 +11,20 @@ input {
     border-radius: 11px;
     display: inline-block;
     box-sizing: border-box;
+    outline: none;
+    border: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus
+{
+    border: 2px solid #7a7a7a;
 }
 
 input:hover {
-    background-color: #f5f5f5;
     transition: all 0.3s ease;
+    background-color: #ffffffdb;
 }
 
 button {
@@ -43,6 +52,7 @@ button:disabled {
 
 .container {
     align-self: center;
+    box-shadow: 0px 0px 10px black;
     background-color: #e6e9edcc;
     overflow: hidden;
     margin-bottom: auto;
@@ -50,7 +60,6 @@ button:disabled {
     margin-left: 10px;
     padding-bottom: 10px;
     border-radius: 10px;
-    box-shadow: 0px 0px 10px black;
 }
 
 .form-container {
