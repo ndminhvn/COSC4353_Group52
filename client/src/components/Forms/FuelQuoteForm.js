@@ -6,7 +6,7 @@ import { getToken } from '../../utils/useToken.js';
 import './FuelQuoteForm.css'
 
 const testProfile = {
-    address: '123 Main Street',
+    address: '12345 Kingstone Boulevard',
     address2: '',
     city: 'Houston',
     state: 'TX',
@@ -29,6 +29,7 @@ const FuelQuoteForm = (props) => {
     const [selectedDate, setSelectedDate] = useState('');
     const [quoteFormValid, setQuoteFormValid] = useState(false);
     const [quoteValid, setQuoteValid] = useState(false);
+    const [fullDeliveryAddress, setFullDeliveryAddress] = useState('');
 
     // is this needed?
     // const [data, setData] = useState({
@@ -122,6 +123,7 @@ const FuelQuoteForm = (props) => {
             window.location.reload(true);
         } else {
             setProfile(testProfile);
+            setFullDeliveryAddress(`${profile.address}, ${profile.city}, ${profile.state}, ${profile.zip}`);
 
             const checkFormValidity = () => {
                 if (gallons !== '' && selectedDate !== '') {
@@ -132,7 +134,7 @@ const FuelQuoteForm = (props) => {
             }
             checkFormValidity();
         }
-    }, [token, gallons, selectedDate, quoteFormValid, quoteValid, navigate]);
+    }, [token, fullDeliveryAddress, gallons, selectedDate, quoteFormValid, quoteValid, navigate]);
 
     return (
         <>
@@ -155,7 +157,6 @@ const FuelQuoteForm = (props) => {
                             onChange={(e) => setGallons(e.target.value)}
                             required
                         />
-                        <br />
                         <label className='label' htmlFor='deliveryDate'>
                             Delivery Date
                         </label>
@@ -167,62 +168,19 @@ const FuelQuoteForm = (props) => {
                             onChange={(e) => onSelectedDate(e)}
                             required
                         />
-                        <label className='label' htmlFor='staticAddress'>
-                            Address
+                        <label className='label' htmlFor='staticFullAddress'>
+                            Delivery Address
                         </label>
-                        <input
-                            type='text'
-                            id='staticAddress'
-                            name='staticAddress'
+                        <textarea
+                            id='statiFullAddress'
+                            name='staticFullAddress'
                             placeholder='Address'
-                            value={profile.address}
+                            value={fullDeliveryAddress}
                             readOnly
-                            style={{ 'backgroundColor': '#d4d6d8b4' }}
                         />
-                        <br />
-                        <label className='label' htmlFor='staticCity'>
-                            City
-                        </label>
-                        <input
-                            type='text'
-                            id='staticCity'
-                            name='staticCity'
-                            placeholder='City'
-                            value={profile.city}
-                            readOnly
-                            style={{ 'backgroundColor': '#d4d6d8b4' }}
-                        />
-                        <br />
-                        <label className='label' htmlFor='staticState'>
-                            State
-                        </label>
-                        <input
-                            type='text'
-                            id='staticState'
-                            name='staticState'
-                            placeholder='State'
-                            value={profile.state}
-                            readOnly
-                            style={{ 'backgroundColor': '#d4d6d8b4' }}
-                        />
-                        <br />
-                        <label className='label' htmlFor='staticZip'>
-                            ZIP Code
-                        </label>
-                        <input
-                            type='text'
-                            id='staticZip'
-                            name='staticZip'
-                            placeholder='ZIP Code'
-                            value={profile.zip}
-                            readOnly
-                            style={{ 'marginBottom': '10px', 'backgroundColor': '#d4d6d8b4' }}
-                        />
-                        <br />
                         <button type='submit' disabled={!quoteFormValid} onSubmit={onGetQuote}>
                             Request Quote
                         </button>
-                        <br />
                     </form>
                 </div>
                 <div className='container'>

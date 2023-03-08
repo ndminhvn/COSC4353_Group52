@@ -5,7 +5,7 @@ h1 {
     text-shadow: 1px 1px 2px lightgrey;
 }
 
-input {
+input, textarea {
     width: 100%;
     padding: 8px;
     border-radius: 11px;
@@ -15,11 +15,21 @@ input {
     border: none;
 }
 
+textarea {
+    text-align: center;
+    word-wrap: soft;
+    background-color: #d4d6d8b4;
+    overflow: auto;
+}
+
 input:focus,
-select:focus,
 textarea:focus
 {
     border: 2px solid #7a7a7a;
+}
+
+textarea:hover {
+    transition: all 0.3s ease;
 }
 
 input:hover {
