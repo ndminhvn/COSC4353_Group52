@@ -5,6 +5,7 @@ import axios from 'axios';
 import { getToken } from '../../utils/useToken.js';
 import './FuelQuoteForm.css'
 
+// test data for profile
 const testProfile = {
     address: '12345 Kingstone Boulevard',
     address2: '',
@@ -23,23 +24,13 @@ const FuelQuoteForm = () => {
     const navigate = useNavigate();
     const username = localStorage.getItem('username');
     // const token = getToken();
-    const token = true;
+    const token = true; // test token
 
     const [gallons, setGallons] = useState('');
     const [selectedDate, setSelectedDate] = useState('');
     const [quoteFormValid, setQuoteFormValid] = useState(false);
     const [quoteValid, setQuoteValid] = useState(false);
     const [fullDeliveryAddress, setFullDeliveryAddress] = useState('');
-
-    // is this needed?
-    // const [data, setData] = useState({
-    //     gallonsReq: 0,
-    //     deliveryAddress: '',
-    //     deliveryDate: '',
-    //     suggestedPPG: 0,
-    //     totalDue: 0,
-    //     username: ""
-    // })
 
     const [profile, setProfile] = useState({
         address: '',
@@ -66,7 +57,6 @@ const FuelQuoteForm = () => {
         }
 
         setSelectedDate(e.target.value);
-        // setData({ ...data, deliveryDate: selectedDate });
     }
 
     const onGetQuote = async (e) => {
@@ -74,27 +64,17 @@ const FuelQuoteForm = () => {
         e.preventDefault();
 
         if (quoteFormValid) {
-            // setData({ ...data, deliveryDate: selectedDate, gallonsReq: gallons });
 
             // await axios.get(`${BASE_URL}/${username}/${gallons}`)
             // .then(res => {
             //     setQuote(res.data);
             // })
 
-            // setData({
-            //     gallonsReq: gallons,
-            //     deliveryAddress: profile.address,
-            //     deliveryDate: selectedDate,
-            //     suggestedPPG: quote.price,
-            //     totalDue: quote.total,
-            //     username: username
-            // });
-
             setQuote({
                 gallons: gallons,
                 deliveryDate: selectedDate,
-                price: '1.675', // get from backend
-                total: '999.99' // get from backend
+                price: '1.67', // get from backend
+                total: '999.999' // get from backend
             });
 
             setQuoteValid(true);
@@ -104,7 +84,7 @@ const FuelQuoteForm = () => {
     const onQuoteSubmit = async (e) => {
         e.preventDefault();
 
-        const mergedData = { ...profile, ...quote, username };
+        const mergedData = { ...profile, ...quote, username }; // data to submit to the backend server
 
         console.log("submit mergedData:", mergedData);
     }
@@ -116,7 +96,7 @@ const FuelQuoteForm = () => {
             navigate('/login');
             window.location.reload(true);
         } else {
-            setProfile(testProfile);
+            setProfile(testProfile); // will get from http get call later on
             setFullDeliveryAddress(`${profile.address}, ${profile.city}, ${profile.state}, ${profile.zip}`);
 
             const checkFormValidity = () => {
@@ -128,7 +108,7 @@ const FuelQuoteForm = () => {
             }
             checkFormValidity();
         }
-    }, [token, fullDeliveryAddress, gallons, selectedDate, quoteFormValid, quoteValid, navigate]);
+    }, [token, profile, fullDeliveryAddress, gallons, selectedDate, quoteFormValid, quoteValid, navigate]);
 
     return (
         <>
