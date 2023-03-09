@@ -19,7 +19,7 @@ const getMinDeliveryDays = () => {
     return (new Date(minDate));
 }
 
-const FuelQuoteForm = (props) => {
+const FuelQuoteForm = () => {
     const navigate = useNavigate();
     const username = localStorage.getItem('username');
     // const token = getToken();
@@ -104,12 +104,6 @@ const FuelQuoteForm = (props) => {
     const onQuoteSubmit = async (e) => {
         e.preventDefault();
 
-        // probably redundant check due to having button disabled if invalid anyways
-        // if (quoteValid === false) {
-        //     alert("Form is incomplete");
-        //     return;
-        // }
-
         const mergedData = { ...profile, ...quote, username };
 
         console.log("submit mergedData:", mergedData);
@@ -138,10 +132,7 @@ const FuelQuoteForm = (props) => {
 
     return (
         <>
-            <br />
-            <center>
-                <h1>Fuel Quote Form</h1>
-            </center>
+            <h1>Fuel Quote Form</h1>
             <div className='form-container'>
                 <div className='container'>
                     <form onSubmit={onGetQuote} style={{ 'padding': '10px' }}>
@@ -240,4 +231,4 @@ const FuelQuoteForm = (props) => {
     )
 }
 
-export default FuelQuoteForm
+export default FuelQuoteForm;

@@ -3,6 +3,7 @@ h1 {
     font-family: 'Courier New', Courier, monospace;
     font-size: 25px;
     text-shadow: 1px 1px 2px lightgrey;
+    text-align: center;
 }
 
 input, textarea {
