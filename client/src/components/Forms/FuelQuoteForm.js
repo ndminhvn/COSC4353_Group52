@@ -1,102 +1,214 @@
-import React, { useState } from 'react';
-import DatePicker from "react-datepicker";
-import 'react-datepicker/dist/react-datepicker.css';
+import { React, useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { BASE_URL } from '../../utils/constants.js';
+import axios from 'axios';
+import { getToken } from '../../utils/useToken.js';
 import './FuelQuoteForm.css'
 
-const FuelQuoteForm = () => {
-    const [selectedDate, setSelectedDate] = useState(null);
+// test data for profile
+const testProfile = {
+    address: '12345 Kingstone Boulevard',
+    address2: '',
+    city: 'Houston',
+    state: 'TX',
+    zip: '77072',
+}
 
-    // //Fastest delivey takes three days
-    let date = new Date();
-    date.setDate(date.getDate() + 3);
+const getMinDeliveryDays = () => {
+    let curDate = new Date();
+    const minDate = curDate.setDate(curDate.getDate() + 3);
+    return (new Date(minDate));
+}
+
+const FuelQuoteForm = () => {
+    const navigate = useNavigate();
+    const username = localStorage.getItem('username');
+    // const token = getToken();
+    const token = true; // test token
+
+    const [gallons, setGallons] = useState('');
+    const [selectedDate, setSelectedDate] = useState('');
+    const [quoteFormValid, setQuoteFormValid] = useState(false);
+    const [quoteValid, setQuoteValid] = useState(false);
+    const [fullDeliveryAddress, setFullDeliveryAddress] = useState('');
+
+    const [profile, setProfile] = useState({
+        address: '',
+        address2: '',
+        city: '',
+        state: '',
+        zip: '',
+    });
+
+    const [quote, setQuote] = useState({
+        gallons: '0',
+        deliveryDate: '',
+        price: '0',
+        total: '0',
+    });
+
+    const onSelectedDate = (e) => {
+        const day = new Date(e.target.value).getUTCDay();
+
+        if ([6, 0].includes(day)) {
+            e.preventDefault();
+            e.target.value = '';
+            alert('Weekends not allowed');
+        }
+
+        setSelectedDate(e.target.value);
+    }
+
+    const onGetQuote = async (e) => {
+
+        e.preventDefault();
+
+        if (quoteFormValid) {
+
+            // await axios.get(`${BASE_URL}/${username}/${gallons}`)
+            // .then(res => {
+            //     setQuote(res.data);
+            // })
+
+            setQuote({
+                gallons: gallons,
+                deliveryDate: selectedDate,
+                price: '1.67', // get from backend
+                total: '999.999' // get from backend
+            });
+
+            setQuoteValid(true);
+        }
+    }
+
+    const onQuoteSubmit = async (e) => {
+        e.preventDefault();
+
+        const mergedData = { ...profile, ...quote, username }; // data to submit to the backend server
+
+        console.log("submit mergedData:", mergedData);
+    }
+
+    useEffect(() => {
+
+        if (!token) {
+            localStorage.clear();
+            navigate('/login');
+            window.location.reload(true);
+        } else {
+            setProfile(testProfile); // will get from http get call later on
+            setFullDeliveryAddress(`${profile.address}, ${profile.city}, ${profile.state}, ${profile.zip}`);
+
+            const checkFormValidity = () => {
+                if (gallons !== '' && selectedDate !== '') {
+                    setQuoteFormValid(true);
+                } else {
+                    setQuoteFormValid(false);
+                }
+            }
+            checkFormValidity();
+        }
+    }, [token, profile, fullDeliveryAddress, gallons, selectedDate, quoteFormValid, quoteValid, navigate]);
 
     return (
-        <div className="container">
-            <form>
-
-                {/* Date Picker */}
-                <div className="row">
-                    <div className="col-25">
-                        <label for="DatePicker">Date</label>
-                    </div>
-                    <div className="col-75">
-                        <DatePicker
-                            selected={selectedDate}
-                            onChange={newDate => setSelectedDate(newDate)}
-                            minDate={date}
-                            filterDate={date => date.getDay() !== 6 && date.getDay() !== 0} //filtered out weekends
-                            showYearDropdown
-                            scrollableMonthYearDropdown
+        <>
+            <h1>Fuel Quote Form</h1>
+            <div className='form-container'>
+                <div className='container'>
+                    <form onSubmit={onGetQuote} style={{ 'padding': '10px' }}>
+                        <label className='label' htmlFor='requestedGallons' style={{ 'paddingTop': '0px' }}>
+                            Gallons Requested
+                        </label>
+                        <input
+                            type='number'
+                            id='requestedGallons'
+                            name='requestedGallons'
+                            placeholder='# of Gallons (100 min.)'
+                            min='100'
+                            onChange={(e) => setGallons(e.target.value)}
                             required
                         />
-                    </div>
-                </div>
-
-                {/* Enter gallons field */}
-                <div className="row">
-                    <div className="col-25">
-                        <label for="requestAmount">Enter number of gallons</label>
-                    </div>
-                    <div className="col-25">
+                        <label className='label' htmlFor='deliveryDate'>
+                            Delivery Date
+                        </label>
                         <input
-                            type="number"
-                            className="col-50"
-                            id="requestAmount"
-                            placeholder="Minimum of 100 gallons"
-                            min="100"
-                            required />
-                    </div>
+                            type='date'
+                            id='deliveryDate'
+                            name='deliveryDate'
+                            min={getMinDeliveryDays().toISOString().slice(0, 10)}
+                            onChange={(e) => onSelectedDate(e)}
+                            required
+                        />
+                        <label className='label' htmlFor='staticFullAddress'>
+                            Delivery Address
+                        </label>
+                        <textarea
+                            id='statiFullAddress'
+                            name='staticFullAddress'
+                            placeholder='Address'
+                            value={fullDeliveryAddress}
+                            readOnly
+                        />
+                        <button type='submit' disabled={!quoteFormValid} onSubmit={onGetQuote}>
+                            Request Quote
+                        </button>
+                    </form>
                 </div>
-
-                {/* Non-editable address */}
-                <div className="row">
-                    <div className="col-25">
-                        <label for="staticAddress">Address</label>
-                    </div>
-                    <div className="col-75">
+                <div className='container'>
+                    <form onSubmit={onQuoteSubmit} style={{ 'padding': '10px' }}>
+                        <label className='label' htmlFor='staticGallons' style={{ 'padding': '0px', 'margin': '0px' }}>
+                            Gallons Requested
+                        </label>
                         <input
-                            type="text"
-                            readonly class="form-control-plaintext"
-                            id="staticAddress"
-                            value="123 Main St, Houston, TX, 77072" />
-                    </div>
-                </div>
-
-                {/* Non-editable price */}
-                <div className="row">
-                    <div className="col-25">
-                        <label for="staticPrice" >Estimated Price</label>
-                    </div>
-                    <div className="col-75">
+                            type='text'
+                            id='staticGallons'
+                            name='staticGallons'
+                            value={quote.gallons}
+                            readOnly className='form-control-plaintext'
+                            style={{ 'padding': '0px', 'margin': '0px', 'textAlign': 'center' }}
+                        />
+                        {quote.deliveryDate !== '' && <><label className='label' htmlFor='staticDate' style={{ 'padding': '0px', 'margin': '0px' }}>
+                            Delivery Date
+                        </label>
+                            <input
+                                type='text'
+                                id='staticDate'
+                                name='staticDate'
+                                value={quote.deliveryDate}
+                                readOnly className='form-control-plaintext'
+                                style={{ 'padding': '0px', 'margin': '0px', 'textAlign': 'center' }}
+                            /></>}
+                        <label className='label' htmlFor='staticPricePerGallon' style={{ 'padding': '0px', 'margin': '0px' }}>
+                            Suggested Price Per Gallon
+                        </label>
                         <input
-                            type="text"
-                            readonly class="form-control-plaintext"
-                            id="staticPrice"
-                            value="$750,000" />
-                    </div>
-                </div>
-
-                {/* Non-editable price per gallon */}
-                <div className="row">
-                    <div className="col-25">
-                        <label for="staticPricePerGallon" >Per gallon cost</label>
-                    </div>
-                    <div className="col-75">
+                            type='text'
+                            id='staticPricePerGallon'
+                            name='staticPricePerGallon'
+                            value={`$ ${parseFloat(quote.price).toFixed(2)}`}
+                            readOnly className='form-control-plaintext'
+                            style={{ 'padding': '0px', 'margin': '0px', 'textAlign': 'center' }}
+                        />
+                        <label className='label' htmlFor='staticPriceDue' style={{ 'padding': '0px', 'margin': '0px' }}>
+                            Estimated Price Due
+                        </label>
                         <input
-                            type="text"
-                            readonly class="form-control-plaintext"
-                            id="staticPricePerGallon"
-                            value="$1.76 per gallon" />
-                    </div>
+                            type='text'
+                            id='staticPriceDue'
+                            name='staticPriceDue'
+                            placeholder='$'
+                            value={`$ ${parseFloat(quote.total).toFixed(2)}`}
+                            readOnly className='form-control-plaintext'
+                            style={{ 'padding': '0px', 'margin': '0px', 'textAlign': 'center' }}
+                        />
+                        <button type='submit' disabled={!quoteValid} onSubmit={onQuoteSubmit}>
+                            Submit Quote
+                        </button>
+                    </form>
                 </div>
-
-                {/* Request button -> confirm button */}
-                <button type="submit" class="btn btn-primary mb-2">Request Quote</button>
-
-
-            </form>
-        </div>
-    );
-};
+            </div>
+        </>
+    )
+}
 
 export default FuelQuoteForm;
