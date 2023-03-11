@@ -10,14 +10,6 @@ pool.connect((err) => {
     console.log("Connected to localhost database");
 })
 
-pool.query('SELECT * FROM users', (err,res) => {
-    if(!err){
-        console.log(res.rows);
-    } else {
-        console.log(err.message)
-    }
-})
-
 // Load dotenv
 const PORT = process.env.PORT || 6000;
 

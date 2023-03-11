@@ -45,3 +45,10 @@ Will fill in the description
     - Fill in the `.env` file
     - Start server: `npm start`
     - Start unit-test: `npm test`
+    - Database:
+      - Install Postgres 15 on your computer and start the database
+      - pgAdmin as database manager: `https://www.pgadmin.org/download/`
+        - Register a new server, make sure the `name` in general and `hostname` are the same, everything else can stay the same.
+        - Create the server.
+        - Go to your .env file and enter in your local settings.
+      - If successfully connected, prompt will display during `npm start`
