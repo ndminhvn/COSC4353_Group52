@@ -20,7 +20,8 @@ class PriceModule {
 
         let unitCost = this.getUnitCost();
         let price = unitCost * this.gallonsRequested;
-        return price;
+        price = (Math.round(( price + Number.EPSILON) * 100) / 100).toFixed(2);
+        return Number(price);
 
     }
 
@@ -35,8 +36,8 @@ class PriceModule {
         )
 
         let unitCost = this.crudePrice + this.margin;
-        unitCost = Math.round(( unitCost + Number.EPSILON) * 100) / 100;
-        return unitCost;
+        unitCost = (Math.round(( unitCost + Number.EPSILON) * 100) / 100).toFixed(2);
+        return Number(unitCost);
 
     }
 }

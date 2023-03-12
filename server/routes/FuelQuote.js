@@ -48,16 +48,11 @@ router.get("/", async (req, res) => {
         "gallons" : gallons, 
         "unitCost" : unitCost,
         "totalCost" : totalCost,
-        "state" : state,
+        "inStateDiscount" : state == 'TX' ? true : false,
         "historyDiscount" : hasHistory}
 
     res.send(body);
          
-});
-
-// Helps get the price using client_id, and gallon requested
-router.get("/", (req, res) => {
-    res.send("Purchase Successfully")
 });
 
 router.post("/", (req, res) => {
