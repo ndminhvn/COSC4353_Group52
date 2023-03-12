@@ -6,7 +6,7 @@ CREATE TABLE "users_info" (
   "address2" varchar,
   "city" varchar,
   "state" char(2),
-  "zipcode" int
+  "zipcode" varchar
 );
 
 DROP TABLE IF EXISTS "order_history";
