@@ -11,7 +11,8 @@ CREATE TABLE "users_info" (
 
 DROP TABLE IF EXISTS "order_history";
 CREATE TABLE "order_history" (
-  "username" varchar PRIMARY KEY,
+  "order_id" varchar PRIMARY KEY,
+  "username" varchar,
   "purchase_date" date,
   "delivery_date" date,
   "delivery_address" varchar,
