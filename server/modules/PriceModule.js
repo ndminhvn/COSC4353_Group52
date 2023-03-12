@@ -18,6 +18,14 @@ class PriceModule {
 
     getQuote(){
 
+        let unitCost = this.getUnitCost();
+        let price = unitCost * this.gallonsRequested;
+        return price;
+
+    }
+
+    getUnitCost(){
+
         this.margin = this.crudePrice *
         ( 
             this.locationFactor 
@@ -26,8 +34,10 @@ class PriceModule {
             + this.profitFactor
         )
 
-        let price = (this.crudePrice + this.margin) * this.gallonsRequested;
-        return price;
+        let unitCost = this.crudePrice + this.margin;
+        unitCost = Math.round(( unitCost + Number.EPSILON) * 100) / 100;
+        return unitCost;
+
     }
 }
 
