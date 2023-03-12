@@ -11,14 +11,14 @@ CREATE TABLE "users_info" (
 
 DROP TABLE IF EXISTS "order_history";
 CREATE TABLE "order_history" (
-  "order_id" varchar PRIMARY KEY,
-  "username" varchar,
+  "order_id" SERIAL PRIMARY KEY,
+  "username" varchar NOT NULL,
   "purchase_date" date,
   "delivery_date" date,
   "delivery_address" varchar,
   "unit_cost" decimal(10,2),
   "gallons_amount" int,
-  "total_cost" decimal(255,2)
+  "total_cost" decimal(255,2),
 );
 
 DROP TABLE IF EXISTS "users";
