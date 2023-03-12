@@ -2,6 +2,7 @@ import Button from '@mui/material/Button';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 // import Divider from '@mui/material/Divider';
 import { Typography } from '@mui/material';
+import bgImage from '../../assets/homepage-bg.png';
 
 import './Home.css';
 
@@ -9,6 +10,7 @@ const Home = () => {
   return (
     <>
     <div id='home'>
+      <img src={bgImage} alt='bgImage' id='loginBg' />
       <div className='text-center'>
         <h1>Fuel Rate Predictor</h1>
         <Typography>Click the button below and we will get the best rate for you!</Typography>
