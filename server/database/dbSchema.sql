@@ -18,7 +18,7 @@ CREATE TABLE "order_history" (
   "delivery_address" varchar,
   "unit_cost" decimal(10,2),
   "gallons_amount" int,
-  "total_cost" decimal(255,2),
+  "total_cost" decimal(255,2)
 );
 
 DROP TABLE IF EXISTS "users";
