@@ -67,7 +67,7 @@ const LoginForm = () => {
       .then(res => {
         setToken(res.data);
         alert('You have successfully logged in!');
-        navigate('/');
+        navigate('/account');
         window.location.reload(true);
       }).catch(error => {
         console.error(error);

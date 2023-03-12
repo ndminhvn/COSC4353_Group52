@@ -1,28 +1,19 @@
-import "./UserProfile.css";
+import axios from "axios";
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
+import { useState, useEffect } from "react";
+import { getToken } from "../../utils/useToken";
+import { BASE_URL } from '../../utils/constants.js';
+import { states } from "../../utils/states";
 import CustomInput from "./CustomInput";
-import CustomSelect from "./CustomSelect"
+import CustomSelect from "./CustomSelect";
+import "./UserProfile.css";
 
-const onSubmit = async (values, actions) => {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  actions.resetForm();
-};
+function UserProfile({username, setUsername}) {
 
-function UserProfile() {
-
-  // get token (username)
-  const states = [
-    "AL", "AK", "AZ", "AR", "CA", "CO",
-    "CT", "DE", "FL", "GA", "HI", "ID",
-    "IL", "IN", "IA", "KS", "KY", "LA",
-    "ME", "MD", "MA", "MI", "MN", "MS",
-    "MO", "MT", "NE", "NV", "NH", "NJ",
-    "NM", "NY", "NC", "ND", "OH", "OK",
-    "OR", "PA", "RI", "SC", "SD", "TN",
-    "TX", "UT", "VT", "VA", "WA", "WV",
-    "WI", "WY"
-  ];
+  // get username/token
+  const token = getToken()
+  console.log(token)
 
   const userSchema = Yup.object({
     name: Yup.string()
@@ -40,23 +31,52 @@ function UserProfile() {
       .max(2, "Invalid state")
       .required("Required")
       .oneOf(states, "Invalid state"),
-    //regex for zipcode: https://stackoverflow.com/questions/2577236/regex-for-zip-code
     zip: Yup.string()
-      // .min(5, "Must be at least 5 digits")
-      // .max(10, "Must be at most 9 digits")
       .matches(
-        /^\d{5}(?:[-\s]\d{4})?$/,
+        /^\d{5}(?:[-\s]\d{4})?$/, //regex for zipcode: https://stackoverflow.com/questions/2577236/regex-for-zip-code
         "Please enter valid zip code (e.g. 12345 or 12345-6789)"
       )
       .required("Required"),
   });
+
+  const onSubmit = async (values, actions) => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    actions.resetForm();
+  };
   // get API
+  const fetchProfileData = async () => {
+    // try {
+    //   const response = await axios.get(`${BASE_URL}/account/${token}`);
+    //   console.log(response.data);
+    // }
+    // catch (error) {
+    //   console.log(error)
+    // }
+  };
 
+  const handleSubmit = async(data) => {
+    // try {
+    //   const response = await axios.post(`${BASE_URL}/account/${token}`, data);
+    //   console.log(response.data);
+    // }
+    // catch (error) {
+    //   console.log(error)
+    // }
+  };
+
+  const handleUpdate = async(data) => {
+    // try {
+    //   const response = await axios.put(`${BASE_URL}/account/${token}`, data);
+    //   console.log(response.data);
+    // }
+    // catch (error) {
+    //   console.log(error)
+    // }
+  };
+  
   // useEffect(() => {
-  //  
-  // }, [profile])
 
-  // post API (update)
+  // }, [])
   
   const initialValues = {
     name: "",
@@ -79,7 +99,8 @@ function UserProfile() {
       validationSchema={userSchema}
       onSubmit={onSubmit}
     >
-      {/* {(props) => ( */}
+      {/* {(props) => ( */} 
+      {/* isSubmitting is one of the props */}
       {({ isSubmitting }) => (
         <div>
           <h1 className="text-center">My Profile</h1>

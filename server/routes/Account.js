@@ -21,28 +21,23 @@ const db = require("../database/dbCreds");
 
 // View a specific user profile
 router.get("/:username", async (req, res) => {
+  const { username } = req.params;
+  console.log(username);
   try {
-    const username = req.params.username;
-    console.log(username);
     const results = await db.query(
       `select * from users_info where username = '${username}'`
     );
-    // console.log(results.rows[0])
-    res.status(200).json({
-      status: "success",
-      data: {
-        user: results.rows[0],
-      },
-    });
+    // send user info to client
+    res.status(200).json(results.rows[0]);
   } catch (error) {
-    console.log(error);
+    res.status(404).json({message: error.message});
   }
 });
 
 // Create profile
 router.post("/:username", async (req, res) => {
   console.log(req.body);
-  const username = req.params.username;
+  const { username } = req.params;
   const { fullname, address2, address1, city, state, zipcode } = req.body;
   try {
     const results = await db.query(
@@ -50,20 +45,28 @@ router.post("/:username", async (req, res) => {
       [username, fullname, address2, address1, city, state, zipcode]
     );
 
-    res.status(200).json({
-      status: "success",
-      data: {
-        user: results.rows[0],
-      },
-    });
-  } catch (err) {
-    console.log(err);
+    res.status(200).json(results.rows[0]);
+  } catch (error) {
+    res.status(404).json({message: error.message});
   }
 });
 
 // Edit profile
-router.put("/", (req, res) => {
-  res.send("Updated profile Successfully");
+router.put("/:username", async (req, res) => {
+  const { username } = req.params;
+  const { fullname, address1, address2, city, state, zipcode } = req.body;
+  try {
+    const results = await db.query(
+      "UPDATE users_info\
+      SET fullname=$1, address1=$2, address2=$3, city=$4, state=$5, zipcode=$6\
+      WHERE username=$7 returning *",
+      [fullname, address1, address2, city, state, zipcode, username]
+    );
+    
+    res.status(200).json(results.rows[0]);
+  } catch (error) {
+    res.status(404).json({message: error.message});
+  }
 });
 
 module.exports = router;
