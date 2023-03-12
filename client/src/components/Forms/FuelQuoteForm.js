@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { BASE_URL } from '../../utils/constants.js';
 import axios from 'axios';
 import { getToken } from '../../utils/useToken.js';
+import bgImage from '../../assets/pages-bg.jpg';
+
 import './FuelQuoteForm.css'
 
 // test data for profile
@@ -111,7 +113,8 @@ const FuelQuoteForm = () => {
     }, [token, profile, fullDeliveryAddress, gallons, selectedDate, quoteFormValid, quoteValid, navigate]);
 
     return (
-        <>
+        <div id='quote-page'>
+            <img src={bgImage} alt='bgImage' id='bgImage' />
             <h1>Fuel Quote Form</h1>
             <div className='form-container'>
                 <div className='container'>
@@ -207,7 +210,7 @@ const FuelQuoteForm = () => {
                     </form>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 
