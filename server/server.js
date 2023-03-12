@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const pool = require('./database/dbCreds');
-
+var bodyParser = require('body-parser')
 require("dotenv").config();
 
 // Connect to database
@@ -17,6 +17,9 @@ const PORT = process.env.PORT || 6000;
 
 // CORS config
 app.use(cors());
+
+// Body-parser
+app.use(bodyParser.json())
 
 // Routes
 app.use("/", require("./routes/Index"));
