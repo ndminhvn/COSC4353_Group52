@@ -1,13 +1,15 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const pool = require('./database/dbCreds')
+const pool = require('./database/dbCreds');
+
 require("dotenv").config();
 
 // Connect to database
 pool.connect((err) => {
     if (err) throw err;
-    console.log("Connected to localhost database");
+    else console.log("Connected to localhost database"); 
+
 })
 
 // Load dotenv
