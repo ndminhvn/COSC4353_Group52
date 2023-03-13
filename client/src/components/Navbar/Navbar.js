@@ -27,7 +27,7 @@ const NavBar = () => {
 			<Navbar.Brand href='/' style={{marginLeft:'10vw'}}>
 				<Image 
 					fluid 
-					className='App-logo shadow-sm' alt='logo' 
+					className='App-logo' alt='logo' 
 					src={logo} 
 				/>
 			</Navbar.Brand>
