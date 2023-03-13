@@ -1,25 +1,47 @@
 const PriceModule = require("../modules/PriceModule");
 
-describe("Checking fuel price calculation", () => {
+describe("Pricing module", () => {
 
-    test("In-state, has history, high volume", () => {
-        const quote = new PriceModule("TX", true, 220);
-        let price = quote.getQuote()
-        expect(price).toEqual(376.20);
+    describe("Calculating quote prices", () => {
 
-    });
+        test("In-state, has history, volume < 1000", () => {
+            const quote = new PriceModule("TX", true, 220);
+            let price = quote.getQuote()
+            expect(price).toEqual(376.20);
+        });
 
-    test("Out-state, no history, low volume", () => {
-        const quote = new PriceModule("CA", false, 500);
-        let price = quote.getQuote()
-        expect(price).toEqual(880);
-    });
+        test("Out-state, no history, volume < 1000", () => {
+            const quote = new PriceModule("CA", false, 500);
+            let price = quote.getQuote()
+            expect(price).toEqual(880);
+        });
 
-    test("In-state, no history, high volume, price with decimal", () => {
-        const quote = new PriceModule("TX", false, 2999);
-        let price = quote.getQuote()
-        expect(price).toEqual(5128.29);
+        test("In-state, no history, volume >= 1000", () => {
+            const quote = new PriceModule("TX", false, 3000);
+            let price = quote.getQuote()
+            expect(price).toEqual(5130);
+        });
 
-    });
+    })
+
+    describe("Rounding to 2 decimals place", () => {
+
+        test("Try rounding 1.789", () => {
+            const quote = new PriceModule("CA", true, 200);
+            let num = quote.rounded(1.789)
+            expect(num).toEqual(1.79);
+        });
+
+        test("Try rounding 1.1", () => {
+            const quote = new PriceModule("CA", true, 200);
+            let num = quote.rounded(1.1)
+            expect(num).toEqual(1.10);
+        });
+
+    })
+
+    
+
+   
 
 })
