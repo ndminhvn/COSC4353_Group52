@@ -61,8 +61,8 @@ const LoginForm = () => {
   })
 
   const onLogin = async (data) => {
-    console.log(JSON.stringify(data, null, 2));
-    await axios.post(`${BASE_URL}/user/login`, data)
+    // console.log(JSON.stringify(data, null, 2));
+    await axios.post(`${BASE_URL}/login`, data)
       .then(res => {
         setToken(res.data);
         alert('You have successfully logged in!');
@@ -75,8 +75,8 @@ const LoginForm = () => {
   };
 
   const onRegister = async (data) => {
-    console.log(JSON.stringify(data, null, 2));
-    await axios.post(`${BASE_URL}/user/register`, data)
+    // console.log(JSON.stringify(data, null, 2));
+    await axios.post(`${BASE_URL}/register`, data)
       .then(res => {
         if (res.status === 200) {
           alert('Successfully registered!');
