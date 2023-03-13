@@ -14,6 +14,7 @@ import './UserAuthForm.css';
 const LoginForm = () => {
   const [tab, setTab] = useState('1');
   const navigate = useNavigate();
+  const [confirmApiResponse, setConfirmApiResponse] = useState(); // confirm api response-used to display message to user
 
   const handleTabChange = (event, value) => {
     setTab(value);
@@ -82,12 +83,13 @@ const LoginForm = () => {
           alert('Successfully registered!');
           navigate('/login')
           window.location.reload(true);
-          // console.log('Successfully registered');
         }
         else {
-          // console.log('Something went wrong. Please try again');
-          alert('Something went wrong. Please try again.');
+          setConfirmApiResponse(res.data);
         }
+      })
+      .catch(error => {
+        setConfirmApiResponse(error.response.data);
       })
   };
 
@@ -226,6 +228,11 @@ const LoginForm = () => {
               >
                 Register
               </Button>
+              {(confirmApiResponse) && 
+                <i style={{color: 'red'}}>
+                  <p className='text-center'>{confirmApiResponse}</p>
+                </i>
+              }
               <p className="text-center"><a href='#login' onClick={() => setTab('1')}>Back to Login</a></p>
             </form>
           </TabPanel>

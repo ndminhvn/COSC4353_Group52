@@ -24,11 +24,11 @@ router.post("/", async (req, res) => {
                 );
                 res.status(200).send(username);
             } catch (error) {
-                res.status(300).send("Error while adding this user. ", error);
+                res.status(201).send("Error while adding this user.", error);
             }
         }
         else {
-            res.status(400).send("Username found. Please log in.");
+            res.status(400).send("Username already existed. Please log in.");
         }
     } catch (error) {
         res.status(500).send("Error occurred while adding a new user. Please try again!");
