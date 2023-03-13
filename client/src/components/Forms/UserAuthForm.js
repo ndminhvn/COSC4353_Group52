@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Box, Tab, TextField, Button, Typography } from '@mui/material';
 import { TabPanel, TabContext, TabList } from '@mui/lab';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { useNavigate } from "react-router-dom";
@@ -46,7 +46,6 @@ const LoginForm = () => {
 
   const {
     register,
-    control,
     handleSubmit,
     formState: { errors }
   } = useForm({
@@ -54,8 +53,7 @@ const LoginForm = () => {
   });
 
   const { 
-    register: register1, 
-    control: control1, 
+    register: register1,
     handleSubmit: handleSubmit1, 
     formState: { errors: errors1 } 
   } = useForm({
@@ -63,8 +61,8 @@ const LoginForm = () => {
   })
 
   const onLogin = async (data) => {
-    console.log(JSON.stringify(data, null, 2));
-    await axios.post(`${BASE_URL}/user/login`, data)
+    // console.log(JSON.stringify(data, null, 2));
+    await axios.post(`${BASE_URL}/login`, data)
       .then(res => {
         setToken(res.data);
         alert('You have successfully logged in!');
@@ -77,8 +75,8 @@ const LoginForm = () => {
   };
 
   const onRegister = async (data) => {
-    console.log(JSON.stringify(data, null, 2));
-    await axios.post(`${BASE_URL}/user/register`, data)
+    // console.log(JSON.stringify(data, null, 2));
+    await axios.post(`${BASE_URL}/register`, data)
       .then(res => {
         if (res.status === 200) {
           alert('Successfully registered!');
@@ -132,11 +130,10 @@ const LoginForm = () => {
               <TextField
                 required
                 fullWidth
-                name='username'
+                name='usernameLogin'
                 label='Username'
-                // type='text'
                 margin='normal'
-                {...register('username')}
+                {...register('usernameLogin')}
                 error={errors.firstName ? true : false}
               />
               <Typography variant="inherit" color="textSecondary">
@@ -147,7 +144,6 @@ const LoginForm = () => {
                 required
                 fullWidth
                 name='passwordLogin'
-                // control={control}
                 label='Password'
                 type='password'
                 autoComplete='currentPassword'
@@ -182,11 +178,10 @@ const LoginForm = () => {
               <TextField
                 required
                 fullWidth
-                name='username'
+                name='usernameRegister'
                 label='Username'
-                // type='text'
                 margin='normal'
-                {...register1('username')}
+                {...register1('usernameRegister')}
                 error={errors1.firstName ? true : false}
               />
               <Typography variant="inherit" color="textSecondary">
@@ -196,7 +191,6 @@ const LoginForm = () => {
                 required
                 fullWidth
                 name='passwordRegister'
-                // control={control}
                 label='Password'
                 type='password'
                 autoComplete='currentPassword'
@@ -229,7 +223,6 @@ const LoginForm = () => {
                 variant='contained' 
                 color='success' 
                 size='lg'
-                // onClick={handleSubmit1(onSubmit1)}
               >
                 Register
               </Button>
