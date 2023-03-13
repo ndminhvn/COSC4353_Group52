@@ -10,6 +10,8 @@ const onSubmit = async (values, actions) => {
 };
 
 function UserProfile() {
+
+  // get token (username)
   const states = [
     "AL", "AK", "AZ", "AR", "CA", "CO",
     "CT", "DE", "FL", "GA", "HI", "ID",
@@ -48,7 +50,14 @@ function UserProfile() {
       )
       .required("Required"),
   });
+  // get API
 
+  // useEffect(() => {
+  //  
+  // }, [profile])
+
+  // post API (update)
+  
   const initialValues = {
     name: "",
     address1: "",
