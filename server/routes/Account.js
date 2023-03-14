@@ -41,13 +41,13 @@ router.get("/:username", async (req, res) => {
 
 // Create profile
 router.post("/:username", async (req, res) => {
-  console.log(req.body);
+  //   console.log(req.body);
   const username = req.params.username;
-  const { fullname, address2, address1, city, state, zipcode } = req.body;
+  const { fullname, address1, address2, city, state, zipcode } = req.body;
   try {
     const results = await db.query(
       "INSERT INTO users_info VALUES ($1, $2, $3, $4, $5, $6, $7) returning *",
-      [username, fullname, address2, address1, city, state, zipcode]
+      [username, fullname, address1, address2, city, state, zipcode]
     );
 
     res.status(200).json({
@@ -62,8 +62,25 @@ router.post("/:username", async (req, res) => {
 });
 
 // Edit profile
-router.put("/", (req, res) => {
-  res.send("Updated profile Successfully");
+router.put("/:username", async (req, res) => {
+  const username = req.params.username;
+  const { fullname, address1, address2, city, state, zipcode } = req.body;
+  try {
+    const results = await db.query(
+      "UPDATE users_info\
+      SET fullname=$1, address1=$2, address2=$3, city=$4, state=$5, zipcode=$6\
+      WHERE username=$7 returning *",
+      [fullname, address1, address2, city, state, zipcode, username]
+    );
+    res.status(200).json({
+      status: "success",
+      data: {
+        user: results.rows[0],
+      },
+    });
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 module.exports = router;
