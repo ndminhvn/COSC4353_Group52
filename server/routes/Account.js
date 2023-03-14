@@ -18,24 +18,6 @@ const db = require("../database/dbCreds");
 //     console.log(err);
 //   }
 // });
-const db = require("../database/dbCreds");
-
-// Get all users (testing)
-// router.get("/", async (req, res) => {
-//   try {
-//     const results = await db.query(`SELECT * FROM USERS_INFO`);
-//     //console.log(results)
-//     res.status(200).json({
-//       status: "success",
-//       results: results.rows.length,
-//       data: {
-//         users: results.rows,
-//       },
-//     });
-//   } catch (err) {
-//     console.log(err);
-//   }
-// });
 
 // View a specific user profile
 router.get("/:username", async (req, res) => {
