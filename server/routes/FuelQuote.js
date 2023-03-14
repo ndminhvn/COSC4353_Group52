@@ -7,9 +7,9 @@ const PriceModule = require('../modules/PriceModule');
 // baseurl/quote/?username=eli&gallons=500
 router.get("/", async (req, res) => {
     try {
+    
         const username = req.query.username;
         const gallons = Number(req.query.gallons);
-
         let hasHistory, unitCost, totalCost, fullAddress;
         let address1, city, state, zipcode;
 
