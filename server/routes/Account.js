@@ -60,7 +60,7 @@ router.post("/:username", async (req, res) => {
   try {
     const results = await db.query(
       "INSERT INTO users_info VALUES ($1, $2, $3, $4, $5, $6, $7) returning *",
-      [username, fullname, address2, address1, city, state, zipcode]
+      [username, fullname, address1, address2, city, state, zipcode]
     );
 
     res.status(200).json(results.rows[0]);
