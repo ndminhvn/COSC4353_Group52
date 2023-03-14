@@ -8,7 +8,7 @@ const PriceModule = require('../modules/PriceModule');
 router.get("/", async (req, res) => {
 
     const username = req.query.username;
-    const gallons = req.query.gallons;
+    const gallons = Number(req.query.gallons);
 
     let hasHistory, unitCost, totalCost, fullAddress;
     let address1, city, state, zipcode;
