@@ -9,7 +9,7 @@ import CustomInput from "./CustomInput";
 import CustomSelect from "./CustomSelect";
 import "./UserProfile.css";
 
-function UserProfile({username, setUsername}) {
+function UserProfile() {
 
   // get username/token
   const token = getToken()
