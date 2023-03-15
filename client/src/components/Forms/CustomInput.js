@@ -1,21 +1,24 @@
-import { useField, ErrorMessage } from "formik"
+import { useField } from "formik"
+import { TextField } from "@mui/material"
 
-function CustomInput({label, ...props}) {
-  const [field, meta] = useField(props)
-  // console.log(field, meta)
-  return (
-    <div className="mb-2">
-      <label htmlFor={field.name}>{label}</label>
-      <input 
-        {...field}
-        {...props}
-        autoComplete="off"
-        className={`form-control shadow-none ${meta.touched && meta.error ? "input-error" : ""}`}
-      />
-      {/* <ErrorMessage name={field.name}/> */}
-      {meta.touched && meta.error && <div className="error">{meta.error}</div>}
-    </div>
-  )
+function CustomInput({name, ...props}) {
+  const [field, meta] = useField(name)
+
+  const configTextField = {
+    ...field,
+    ...props,
+    fullWidth: true,
+    variant: 'outlined',
+    //variant: 'standard',
+  }
+
+  if (meta && meta.touched && meta.error){
+    configTextField.error = true
+    configTextField.helperText = meta.error
+  }
+
+  return <TextField {...configTextField}/>
 }
 
 export default CustomInput
+

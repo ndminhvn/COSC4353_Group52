@@ -2,9 +2,10 @@ import React, {useState, useEffect} from 'react';
 import { useNavigate } from "react-router-dom";
 import UserProfile from '../../components/Forms/UserProfile';
 import { getToken } from '../../utils/useToken.js';
-
-import "bootstrap/dist/css/bootstrap.min.css";
+import ProfileForm from '../../components/Forms/ProfileForm';
+import background from '../../assets/pages-bg.jpg';
 import "./Profile.css";
+
 
 const Profile = () => {
   const token = getToken();
@@ -31,12 +32,9 @@ const Profile = () => {
   }
   else {
     return (
-      <div className='container mt-3 p-3'>
-        <div className='row justify-content-center'>
-          <div className="col-md-5">
-            <UserProfile />
-          </div>
-        </div>
+      <div>
+        <img src={background} alt='bgImage' id='bgImage' />
+            <ProfileForm />
       </div>
     );
   }
