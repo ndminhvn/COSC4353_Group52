@@ -88,8 +88,7 @@ router.post("/", async (req, res) => {
             ($1, $2, $3, $4, $5, $6, $7);`,
             [username, orderDate, deliveryDate, deliveryAddress, unitCost, gallons, totalCost]);
 
-        console.log("Successfully save order to database")
-        return res.status(201).send("Success");
+        return res.status(201).send("Success saving purchase");
 
     } catch (error) {
         return res.status(400).send(error);
