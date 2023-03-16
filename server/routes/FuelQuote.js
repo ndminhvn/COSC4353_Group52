@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
 
         // Handle bad url paremeters
         if (username == null || !(gallons > 100)) {
-            return res.status(400).send("Invalid url query");
+            throw new Error({ message: "Invalid URL query" });
         }
 
         // Get client info
@@ -44,7 +44,7 @@ router.get("/", async (req, res) => {
             fullAddress = address1 + ", " + city + ", " + state + ", " + zipcode;
 
         } catch (error) {
-            return res.status(500).send("Error occured during client info query");
+            return res.status(404).send("No client with this username");
         }
 
         // Get client history
@@ -68,7 +68,7 @@ router.get("/", async (req, res) => {
         });
 
     } catch (error) {
-        return res.status(500).send("/GET error", error);
+        return res.status(500).send(error);
     }
 });
 
@@ -80,23 +80,19 @@ router.post("/", async (req, res) => {
         let orderDate = new Date().toISOString().slice(0, 10);
         const { username, deliveryDate, deliveryAddress, unitCost, gallons, totalCost } = req.body;
 
-        try {
-            // Save to database
-            let query = await pool.query(
-                `INSERT INTO order_history 
-                (username, purchase_date, delivery_date, delivery_address, unit_cost, gallons_amount, total_cost)
-                VALUES 
-                ($1, $2, $3, $4, $5, $6, $7)`,
-                [username, orderDate, deliveryDate, deliveryAddress, unitCost, gallons, totalCost]);
+        // Save to database
+        await pool.query(
+            `INSERT INTO order_history 
+            (username, purchase_date, delivery_date, delivery_address, unit_cost, gallons_amount, total_cost)
+            VALUES 
+            ($1, $2, $3, $4, $5, $6, $7);`,
+            [username, orderDate, deliveryDate, deliveryAddress, unitCost, gallons, totalCost]);
 
-            console.log("Successfully save order to database")
-
-        } catch (error) {
-            res.status(500);
-        }
+        console.log("Successfully save order to database")
+        return res.status(201).send("Success");
 
     } catch (error) {
-        res.status(400);
+        return res.status(400).send(error);
     }
 
 });
