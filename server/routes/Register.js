@@ -24,7 +24,7 @@ router.post("/", async (req, res) => {
                 );
                 res.status(200).send(username);
             } catch (error) {
-                res.status(201).send("Error while adding this user.", error);
+                res.status(201).send("Error while adding this user.");
             }
         }
         else {
