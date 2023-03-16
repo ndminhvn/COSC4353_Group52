@@ -28,6 +28,7 @@ describe("API Test", () => {
         const response = await request(app).post("/register").send({
             usernameRegister: "neverSeenBefore",
             passwordRegister: "newPassword"  
+
         })
         await pool.query(`ROLLBACK;`);
 
@@ -35,7 +36,7 @@ describe("API Test", () => {
     })
 
     test("POST/ Query Error", async () => {
-
+    
         await pool.query(
             `BEGIN TRANSACTION;
             DROP TABLE users_info;`)
