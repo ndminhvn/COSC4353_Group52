@@ -1,14 +1,21 @@
 import axios from "axios";
 import * as Yup from "yup";
-import { Formik, Form, useFormik } from "formik";
+import { Formik, Form } from "formik";
 import { useState, useEffect } from "react";
 import { getToken } from "../../utils/useToken";
 import { BASE_URL } from "../../utils/constants.js";
 import { states } from "../../utils/states";
-import { Container, Grid, Typography, Box, Button, CircularProgress } from "@mui/material";
-import PersonPinIcon from "@mui/icons-material/PersonPin";
-import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
-import userIcon from "../../assets/user.png"
+import {
+  Container,
+  Grid,
+  Typography,
+  Box,
+  Button,
+  CircularProgress,
+} from "@mui/material";
+import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
+import FileDownloadDoneIcon from "@mui/icons-material/FileDownloadDone";
+import userIcon from "../../assets/user.png";
 import CustomSelect from "./CustomSelect";
 import CustomInput from "./CustomInput";
 
@@ -53,7 +60,7 @@ function ProfileForm() {
         console.log("initial data", userData);
       }
       if (userData.fullname) {
-        setIsSubmitted(true)
+        setIsSubmitted(true);
       }
       setIsLoading(false);
     } catch (error) {
@@ -70,13 +77,12 @@ function ProfileForm() {
   const updateUser = async (data) => {
     try {
       const res = await axios.put(`${BASE_URL}/account/${username}`, data);
-      if (res.status === 201) { 
-        console.log('new data', res.data)
-        return res.data
+      if (res.status === 201) {
+        console.log("new data", res.data);
+        return res.data;
       }
-      
     } catch (error) {
-      alert("Cannot update your profile :(")
+      alert("Cannot update your profile :(");
       console.log(error);
     }
   };
@@ -90,17 +96,17 @@ function ProfileForm() {
     zipcode: userData?.zipcode || "",
   };
 
-  const handleSubmit = async(values) => {
-    const newProfile = await updateUser(values)
-    alert("Profile updated!")
-    setIsSubmitted(true)
+  const handleSubmit = async (values) => {
+    const newProfile = await updateUser(values);
+    alert("Profile updated!");
+    setIsSubmitted(true);
   };
 
   return (
     <Container component="main" maxWidth="sm">
       <Box
         sx={{
-          marginTop: 8,
+          marginTop: 10,
           marginBottom: 10,
           display: "flex",
           flexDirection: "column",
@@ -111,21 +117,17 @@ function ProfileForm() {
           p: 4,
         }}
       >
-        <PersonPinIcon style={{ fontSize: "80px" }} />
+        <img src={userIcon} width={90} height={90} alt="user profile" />
+        {/* <PersonPinIcon style={{ fontSize: "80px" }} /> */}
         <Typography
           variant="h4"
           sx={{
             fontWeight: "bold",
             fontFamily: "Playfair Display",
             letterSpacing: "1px",
-
           }}
         >
-          My Profile 
-          <Button onClick={()=>setIsSubmitted(false)}>
-          <BorderColorOutlinedIcon color="action" />
-          </Button>
-          
+          My Profile
         </Typography>
         <Box sx={{ mt: 3 }}>
           {/* FORM STARTS */}
@@ -142,17 +144,37 @@ function ProfileForm() {
                 <Grid container spacing={2}>
                   {/* Full name */}
                   <Grid item xs={12}>
-                    <CustomInput name="fullname" label="Full Name" disabled={isSubmitted} required />
+                    <CustomInput
+                      name="fullname"
+                      label="Full Name"
+                      disabled={isSubmitted}
+                      required
+                    />
                   </Grid>
                   {/* Address 1 */}
                   <Grid item xs={12}>
-                    <CustomInput color="primary" name="address1" label="Address 1" disabled={isSubmitted} required />
+                    <CustomInput
+                      color="primary"
+                      name="address1"
+                      label="Address 1"
+                      disabled={isSubmitted}
+                      required
+                    />
                   </Grid>
                   <Grid item xs={12}>
-                    <CustomInput name="address2" label="Address 2" disabled={isSubmitted} />
+                    <CustomInput
+                      name="address2"
+                      label="Address 2"
+                      disabled={isSubmitted}
+                    />
                   </Grid>
                   <Grid item xs={6}>
-                    <CustomInput name="city" label="City" disabled={isSubmitted} required />
+                    <CustomInput
+                      name="city"
+                      label="City"
+                      disabled={isSubmitted}
+                      required
+                    />
                   </Grid>
                   <Grid item xs={6}>
                     <CustomSelect
@@ -164,33 +186,42 @@ function ProfileForm() {
                     />
                   </Grid>
                   <Grid item xs={12}>
-                    <CustomInput name="zipcode" label="Zip code" disabled={isSubmitted} required />
+                    <CustomInput
+                      name="zipcode"
+                      label="Zip code"
+                      disabled={isSubmitted}
+                      required
+                    />
                   </Grid>
                 </Grid>
                 <Grid
                   container
-                  justifyContent="flex-end"
+                  justifyContent="center"
                   spacing={2}
                   sx={{ mt: 2 }}
                 >
+                  <Grid item>
+                    <Button 
+                    variant="outlined"
+                    disabled={!isSubmitted}
+                    onClick={() => setIsSubmitted(false)}
+                    size="large"
+                    startIcon={<BorderColorOutlinedIcon />}
+                    >
+                      Edit
+                    </Button>
+                  </Grid>
                   <Grid item>
                     <Button
                       type="submit"
                       variant="contained"
                       disabled={isSubmitted}
+                      size="large"
+                      startIcon={<FileDownloadDoneIcon />}
                     >
                       Save
                     </Button>
                   </Grid>
-                  {/* <Grid item>
-                <Button 
-                type="submit" 
-                disabled={isEditted}
-                onClick={handleEdit}
-                variant="contained">
-                  Edit
-                </Button>
-              </Grid> */}
                 </Grid>
               </Form>
             </Formik>
