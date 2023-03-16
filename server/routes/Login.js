@@ -14,7 +14,7 @@ router.post("/", async(req, res) => {
                 WHERE a.username = '${username}'`);
 
         if (existingUser.rows.length === 0) {
-            res.status(404).send("Username not found.");
+            return res.status(404).send("Username not found.");
         }
         else {
             // Check if password entered is correct
@@ -22,7 +22,7 @@ router.post("/", async(req, res) => {
             let isPasswordCorrect = await bcrypt.compare(req.body.passwordLogin, correctPassword);
             
             if (!isPasswordCorrect) {
-                res.status(400).send("Incorrect password.");
+                return res.status(400).send("Incorrect password.");
             }
             else {
                 // check if the user is a first time user 
@@ -30,15 +30,15 @@ router.post("/", async(req, res) => {
                 let fullName = existingUser.rows[0].fullname;
 
                 if (fullName == null) {
-                    res.status(200).send({ username, navigateTo: '/account' });
+                    return res.status(200).send({ username, navigateTo: '/account' });
                 }
-                else res.status(200).send({ username, navigateTo: '/'});
+                else return res.status(200).send({ username, navigateTo: '/'});
             }
         }
     } catch(err) {
         // res.status(500).json({ message: err.message})
         // console.console.error();
-        res.status(500).send("Something went wrong. Please try again!");
+        return res.status(500).send("Something went wrong. Please try again!");
     }
 });
 
