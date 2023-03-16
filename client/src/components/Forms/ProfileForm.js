@@ -7,11 +7,13 @@ import { BASE_URL } from "../../utils/constants.js";
 import { states } from "../../utils/states";
 import { Container, Grid, Typography, Box, Button, CircularProgress } from "@mui/material";
 import PersonPinIcon from "@mui/icons-material/PersonPin";
+import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
+import userIcon from "../../assets/user.png"
 import CustomSelect from "./CustomSelect";
 import CustomInput from "./CustomInput";
 
 const userSchema = Yup.object({
-  name: Yup.string()
+  fullname: Yup.string()
     .max(50, "Must be less than 50 characters")
     .matches(/^[A-Za-z ]*$/, "Please enter valid name")
     .required("Required"),
@@ -26,7 +28,7 @@ const userSchema = Yup.object({
     .max(2, "Invalid state")
     .required("Required")
     .oneOf(states, "Invalid state"),
-  zip: Yup.string()
+  zipcode: Yup.string()
     .matches(
       /^\d{5}(?:[-\s]\d{4})?$/, //regex for zipcode: https://stackoverflow.com/questions/2577236/regex-for-zip-code
       "Please enter valid zip code (e.g. 12345 or 12345-6789)"
@@ -41,7 +43,6 @@ function ProfileForm() {
   const [userData, setUserData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isEditted, setIsEditted] = useState(false);
 
   // fetch user profile
   const fetchData = async () => {
@@ -49,7 +50,10 @@ function ProfileForm() {
       const res = await axios.get(`${BASE_URL}/account/${username}`);
       if (res.status === 201) {
         setUserData(Object.assign(userData, res.data));
-        console.log("user data", userData); // data fetched from database
+        console.log("initial data", userData);
+      }
+      if (userData.fullname) {
+        setIsSubmitted(true)
       }
       setIsLoading(false);
     } catch (error) {
@@ -63,26 +67,33 @@ function ProfileForm() {
   }, []);
 
   // update user profile
-  const updateData = async (data) => {
+  const updateUser = async (data) => {
     try {
       const res = await axios.put(`${BASE_URL}/account/${username}`, data);
-      setUserData(data);
+      if (res.status === 201) { 
+        console.log('new data', res.data)
+        return res.data
+      }
+      
     } catch (error) {
+      alert("Cannot update your profile :(")
       console.log(error);
     }
   };
 
   const initialValues = {
-    name: userData?.fullname || "",
+    fullname: userData?.fullname || "",
     address1: userData?.address1 || "",
     address2: userData?.address2 || "",
     city: userData?.city || "",
     state: userData?.state || "",
-    zip: userData?.zipcode || "",
+    zipcode: userData?.zipcode || "",
   };
 
-  const handleSubmit = (values) => {
-    console.log(values);
+  const handleSubmit = async(values) => {
+    const newProfile = await updateUser(values)
+    alert("Profile updated!")
+    setIsSubmitted(true)
   };
 
   return (
@@ -107,9 +118,14 @@ function ProfileForm() {
             fontWeight: "bold",
             fontFamily: "Playfair Display",
             letterSpacing: "1px",
+
           }}
         >
-          My Profile
+          My Profile 
+          <Button onClick={()=>setIsSubmitted(false)}>
+          <BorderColorOutlinedIcon color="action" />
+          </Button>
+          
         </Typography>
         <Box sx={{ mt: 3 }}>
           {/* FORM STARTS */}
@@ -126,28 +142,29 @@ function ProfileForm() {
                 <Grid container spacing={2}>
                   {/* Full name */}
                   <Grid item xs={12}>
-                    <CustomInput name="name" label="Full Name" required />
+                    <CustomInput name="fullname" label="Full Name" disabled={isSubmitted} required />
                   </Grid>
                   {/* Address 1 */}
                   <Grid item xs={12}>
-                    <CustomInput name="address1" label="Address 1" required />
+                    <CustomInput color="primary" name="address1" label="Address 1" disabled={isSubmitted} required />
                   </Grid>
                   <Grid item xs={12}>
-                    <CustomInput name="address2" label="Address 2" />
+                    <CustomInput name="address2" label="Address 2" disabled={isSubmitted} />
                   </Grid>
                   <Grid item xs={6}>
-                    <CustomInput name="city" label="City" required />
+                    <CustomInput name="city" label="City" disabled={isSubmitted} required />
                   </Grid>
                   <Grid item xs={6}>
                     <CustomSelect
                       name="state"
                       label="State"
                       options={states}
+                      disabled={isSubmitted}
                       required
                     />
                   </Grid>
                   <Grid item xs={12}>
-                    <CustomInput name="zip" label="Zip code" required />
+                    <CustomInput name="zipcode" label="Zip code" disabled={isSubmitted} required />
                   </Grid>
                 </Grid>
                 <Grid
