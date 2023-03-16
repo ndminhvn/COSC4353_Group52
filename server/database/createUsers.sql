@@ -9,3 +9,7 @@ VALUES ('minh', 'towerParis22');
 
 INSERT INTO users (username, password)
 VALUES ('eli', 'bigintern99');
+
+-- For Testing --
+INSERT INTO users (username, password)
+VALUES ('tom', 'nopass');

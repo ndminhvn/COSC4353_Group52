@@ -6,65 +6,69 @@ const PriceModule = require('../modules/PriceModule');
 // Client will send url query
 // baseurl/quote/?username=eli&gallons=500
 router.get("/", async (req, res) => {
+
     try {
-    
-        const username = req.query.username;
-        const gallons = Number(req.query.gallons);
+
+        let username, gallons;
         let hasHistory, unitCost, totalCost, fullAddress;
         let address1, city, state, zipcode;
+
+        username = req.query.username;
+        gallons = Number(req.query.gallons);
+
+        // Handle bad url paremeters
+        if (username == null || !(gallons > 100)) {
+            return res.status(400).send("Invalid url query");
+        }
 
         // Get client info
         try {
             let query = await pool.query(
                 `SELECT address1, city, state, zipcode 
-            FROM users_info 
-            WHERE username = '${username}'`);
+                FROM users_info 
+                WHERE username = '${username}'`);
+            query = query.rows[0];
 
-            address1 = query.rows[0].address1;
-            city = query.rows[0].city;
-            state = query.rows[0].state;
-            zipcode = query.rows[0].zipcode;
+            // Empty profile data handling
+            for (let key in query) {
+                if (query[key] == null) {
+                    return res.status(403).send("Client profile is missing");
+                }
+            }
+
+            // Populate variables with client data
+            address1 = query.address1;
+            city = query.city;
+            state = query.state;
+            zipcode = query.zipcode;
             fullAddress = address1 + ", " + city + ", " + state + ", " + zipcode;
 
         } catch (error) {
-            res.status(500).send("Error getting client info", error);
+            return res.status(500).send("Error occured during client info query");
         }
 
         // Get client history
-        try {
-            let query = await pool.query(
-                `SELECT username 
+        let query = await pool.query(
+            `SELECT username 
             FROM order_history
             WHERE username = '${username}' LIMIT 1`);
-            hasHistory = query.rows.length != 0 ? true : false
+        hasHistory = query.rows.length != 0 ? true : false
 
-        } catch (error) {
-            res.status(500).send("Error quering client history", error);
-        }
+        // Get prices and send back to client
+        const quote = new PriceModule(state, hasHistory, gallons);
+        unitCost = quote.getUnitCost();
+        totalCost = quote.getQuote();
+        res.status(200).send({
+            "gallons": gallons,
+            "unitCost": unitCost,
+            "totalCost": totalCost,
+            "deliveryAddress": fullAddress,
+            "inStateDiscount": state == "TX" ? true : false,
+            "historyDiscount": hasHistory
+        });
 
-        try {
-            // Get unit price and quote price
-            const quote = new PriceModule(state, hasHistory, gallons);
-            unitCost = quote.getUnitCost();
-            totalCost = quote.getQuote();
-
-            // Prepare JSON for front-end
-            let body = {
-                "gallons": gallons,
-                "unitCost": unitCost,
-                "totalCost": totalCost,
-                "deliveryAddress": fullAddress,
-                "inStateDiscount": state == "TX" ? true : false,
-                "historyDiscount": hasHistory
-            }
-
-            res.status(200).send(body);
-
-        } catch (error) {
-            res.status(500).send("Error while preparing data to send", error);
-        }
     } catch (error) {
-        res.status(400).send(error);
+        return res.status(500).send("/GET error", error);
     }
 });
 
@@ -84,15 +88,15 @@ router.post("/", async (req, res) => {
                 VALUES 
                 ($1, $2, $3, $4, $5, $6, $7)`,
                 [username, orderDate, deliveryDate, deliveryAddress, unitCost, gallons, totalCost]);
-    
+
             console.log("Successfully save order to database")
 
         } catch (error) {
-            res.status(500).send("Error saving to database", error);
+            res.status(500);
         }
 
     } catch (error) {
-        res.status(400).send(error);
+        res.status(400);
     }
 
 });
