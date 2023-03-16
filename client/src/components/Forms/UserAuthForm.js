@@ -67,8 +67,11 @@ const LoginForm = () => {
     await axios.post(`${BASE_URL}/login`, data)
       .then(res => {
         setToken(res.data.username);
-        navigate(res.data.navigateTo);
-        window.location.reload(true);
+        setLoginResponse(`Welcome back, ${res.data.username}! You have successfully logged in.`);
+        setTimeout(() => {
+          navigate(res.data.navigateTo);
+          window.location.reload(true);
+        }, 1500);
       }).catch(error => {
         setLoginResponse(error.response.data);
       })
@@ -79,9 +82,11 @@ const LoginForm = () => {
     await axios.post(`${BASE_URL}/register`, data)
       .then(res => {
         if (res.status === 200) {
-          alert('Successfully registered!');
-          navigate('/login')
-          window.location.reload(true);
+          setRegisterResponse('Successfully registered!');
+          setTimeout(() => {
+            navigate('/login')
+            window.location.reload(true);
+          }, 1500);
         }
         else {
           setRegisterResponse(res.data);
@@ -166,7 +171,7 @@ const LoginForm = () => {
                 Login
               </Button>
               {(loginResponse) && 
-                <i style={{color: 'red'}}>
+                <i style={{color: loginResponse.includes('You have successfully logged in.') ? 'green' : 'red'}}>
                   <p className='text-center'>{loginResponse}</p>
                 </i>
               }
@@ -233,7 +238,7 @@ const LoginForm = () => {
                 Register
               </Button>
               {(registerResponse) && 
-                <i style={{color: 'red'}}>
+                <i style={{color: registerResponse === 'Successfully registered!' ? 'green' : 'red'}}>
                   <p className='text-center'>{registerResponse}</p>
                 </i>
               }
