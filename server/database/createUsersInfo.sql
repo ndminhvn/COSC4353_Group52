@@ -9,7 +9,3 @@ VALUES ('minh', 'the flash', '123 Main', 'Houston', 'NY', '77072');
 
 INSERT INTO users_info (username, fullname, address1, city, state, zipcode)
 VALUES ('eli', 'the hulk', '123 Main', 'Houston', 'OR', '77072');
-
--- For Testing --
-INSERT INTO users_info (username)
-VALUES ('tom');
