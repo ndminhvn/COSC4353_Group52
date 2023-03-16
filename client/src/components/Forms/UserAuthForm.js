@@ -14,7 +14,8 @@ import './UserAuthForm.css';
 const LoginForm = () => {
   const [tab, setTab] = useState('1');
   const navigate = useNavigate();
-  const [confirmApiResponse, setConfirmApiResponse] = useState(); // confirm api response-used to display message to user
+  const [loginResponse, setLoginResponse] = useState(); // api response (login) - used to display message to user
+  const [registerResponse, setRegisterResponse] = useState(); // api response (register) - used to display message to user
 
   const handleTabChange = (event, value) => {
     setTab(value);
@@ -65,13 +66,11 @@ const LoginForm = () => {
     // console.log(JSON.stringify(data, null, 2));
     await axios.post(`${BASE_URL}/login`, data)
       .then(res => {
-        setToken(res.data);
-        alert('You have successfully logged in!');
-        navigate('/account');
+        setToken(res.data.username);
+        navigate(res.data.navigateTo);
         window.location.reload(true);
       }).catch(error => {
-        console.error(error);
-        alert('Something went wrong. Please try again.');
+        setLoginResponse(error.response.data);
       })
   };
 
@@ -85,11 +84,11 @@ const LoginForm = () => {
           window.location.reload(true);
         }
         else {
-          setConfirmApiResponse(res.data);
+          setRegisterResponse(res.data);
         }
       })
       .catch(error => {
-        setConfirmApiResponse(error.response.data);
+        setRegisterResponse(error.response.data);
       })
   };
 
@@ -166,6 +165,11 @@ const LoginForm = () => {
               >
                 Login
               </Button>
+              {(loginResponse) && 
+                <i style={{color: 'red'}}>
+                  <p className='text-center'>{loginResponse}</p>
+                </i>
+              }
               <p className="text-center">Not a client yet? <a href='#register' onClick={() => setTab('2')}>
                   Register Now!
                 </a>
@@ -228,9 +232,9 @@ const LoginForm = () => {
               >
                 Register
               </Button>
-              {(confirmApiResponse) && 
+              {(registerResponse) && 
                 <i style={{color: 'red'}}>
-                  <p className='text-center'>{confirmApiResponse}</p>
+                  <p className='text-center'>{registerResponse}</p>
                 </i>
               }
               <p className="text-center"><a href='#login' onClick={() => setTab('1')}>Back to Login</a></p>
