@@ -24,13 +24,11 @@ describe("API Test", () => {
 
     test("POST/ Sucessfully register", async () => {
 
-        let user = "neverSeenBefore";
-        let password = "newPassword";
-
         await pool.query(`BEGIN TRANSACTION;`)
         const response = await request(app).post("/register").send({
-            usernameRegister: user,
-            passwordRegister: password  
+            usernameRegister: "neverSeenBefore",
+            passwordRegister: "newPassword"  
+
         })
         await pool.query(`ROLLBACK;`);
 
@@ -38,20 +36,14 @@ describe("API Test", () => {
     })
 
     test("POST/ Query Error", async () => {
-
-        let user = "neverSeenBefore";
-        let password = "newPassword";
-
+    
         await pool.query(
-            `
-            BEGIN TRANSACTION;
-            DROP TABLE users_info;
-            `)
+            `BEGIN TRANSACTION;
+            DROP TABLE users_info;`)
         const response = await request(app).post("/register").send({
-            usernameRegister: user,
-            passwordRegister: password  
+            usernameRegister: "neverSeenBefore",
+            passwordRegister: "newPassword"  
         })
-        await pool.query(`ROLLBACK;`);
 
         expect(response.statusCode).toBe(201);
     })
