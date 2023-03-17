@@ -11,47 +11,97 @@ import {
   Typography,
   Box,
   Button,
+  CircularProgress,
+  Link,
 } from "@mui/material";
-import PersonPinIcon from "@mui/icons-material/PersonPin";
+import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
+import FileDownloadDoneIcon from "@mui/icons-material/FileDownloadDone";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import userIcon from "../../assets/user.png";
 import CustomSelect from "./CustomSelect";
 import CustomInput from "./CustomInput";
 
-function ProfileForm() {
-  const userSchema = Yup.object({
-    name: Yup.string()
-      .max(50, "Must be less than 50 characters")
-      .matches(/^[A-Za-z ]*$/, "Please enter valid name")
-      .required("Required"),
-    address1: Yup.string()
-      .max(100, "Must be less than 100 characters")
-      .required("Required"),
-    address2: Yup.string().max(100, "Must be less than 100 characters"),
-    city: Yup.string()
-      .max(100, "Must be less than 100 characters")
-      .required("Required"),
-    state: Yup.string()
-      .max(2, "Invalid state")
-      .required("Required")
-      .oneOf(states, "Invalid state"),
-    zip: Yup.string()
-      .matches(
-        /^\d{5}(?:[-\s]\d{4})?$/, //regex for zipcode: https://stackoverflow.com/questions/2577236/regex-for-zip-code
-        "Please enter valid zip code (e.g. 12345 or 12345-6789)"
-      )
-      .required("Required"),
-  });
+const userSchema = Yup.object({
+  fullname: Yup.string()
+    .max(50, "Must be less than 50 characters")
+    .matches(/^[A-Za-z ]*$/, "Please enter valid name")
+    .required("Required"),
+  address1: Yup.string()
+    .max(100, "Must be less than 100 characters")
+    .required("Required"),
+  address2: Yup.string().max(100, "Must be less than 100 characters"),
+  city: Yup.string()
+    .max(100, "Must be less than 100 characters")
+    .required("Required"),
+  state: Yup.string()
+    .max(2, "Invalid state")
+    .required("Required")
+    .oneOf(states, "Invalid state"),
+  zipcode: Yup.string()
+    .matches(
+      /^\d{5}(?:[-\s]\d{4})?$/, //regex for zipcode: https://stackoverflow.com/questions/2577236/regex-for-zip-code
+      "Please enter valid zip code (e.g. 12345 or 12345-6789)"
+    )
+    .required("Required"),
+});
 
-  const initialValues = {
-    name: "",
-    address1: "",
-    address2: "",
-    city: "",
-    state: "",
-    zip: "",
+function ProfileForm() {
+  // get username = token
+  const username = getToken();
+
+  const [userData, setUserData] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  // fetch user profile
+  const fetchData = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}/account/${username}`);
+      if (res.status === 201) {
+        setUserData(Object.assign(userData, res.data));
+        console.log("initial data", userData);
+      }
+      if (userData.fullname) {
+        setIsSubmitted(true);
+      }
+      setIsLoading(false);
+    } catch (error) {
+      alert("Failed to fetch data");
+      console.log(error);
+    }
   };
 
-  const handleSubmit = (e) => {
-    
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  // update user profile
+  const updateUser = async (data) => {
+    try {
+      const res = await axios.put(`${BASE_URL}/account/${username}`, data);
+      if (res.status === 201) {
+        console.log("new data", res.data);
+        return res.data;
+      }
+    } catch (error) {
+      alert("Cannot update your profile :(");
+      console.log(error);
+    }
+  };
+
+  const initialValues = {
+    fullname: userData?.fullname || "",
+    address1: userData?.address1 || "",
+    address2: userData?.address2 || "",
+    city: userData?.city || "",
+    state: userData?.state || "",
+    zipcode: userData?.zipcode || "",
+  };
+
+  const handleSubmit = async (values) => {
+    const newProfile = await updateUser(values);
+    alert("Profile updated!");
+    setIsSubmitted(true);
   };
 
   return (
@@ -63,74 +113,132 @@ function ProfileForm() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          bgcolor: 'background.paper',
+          bgcolor: "background.paper",
           boxShadow: 2,
           borderRadius: 2,
-          p: 4
+          paddingX: 2,
+          paddingY: 4
+        
         }}
       >
-        <PersonPinIcon style={{ fontSize: "80px" }} />
-        <Typography 
-        variant="h4" 
-        sx={{
-          fontWeight: "bold",
-          fontFamily: "Playfair Display",
-          letterSpacing: "1px",
-        }}
+        <img src={userIcon} width={90} height={90} alt="user profile" />
+
+        <Typography
+          variant="h4"
+          sx={{
+            mt: 2,
+            fontWeight: "bold",
+            fontFamily: "Playfair Display",
+            letterSpacing: "1px",
+          }}
         >
           My Profile
         </Typography>
-
-        {/* FORM */}
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-          <Formik
-            initialValues={initialValues}
-            validationSchema={userSchema}
-            onSubmit={(values) => {
-              console.log(values);
-            }}
-          >
-            <Form>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <CustomInput name="name" label="Full Name" required />
+        <Box sx={{ m: 3 }}>
+          {/* FORM STARTS */}
+          {isLoading ? (
+            <CircularProgress />
+          ) : (
+            <Formik
+              initialValues={initialValues}
+              validationSchema={userSchema}
+              // enableReinitialize
+              onSubmit={handleSubmit}
+            >
+              <Form>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <CustomInput
+                      name="fullname"
+                      label="Full Name"
+                      disabled={isSubmitted}
+                      required
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <CustomInput
+                      color="primary"
+                      name="address1"
+                      label="Address 1"
+                      disabled={isSubmitted}
+                      required
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <CustomInput
+                      name="address2"
+                      label="Address 2"
+                      disabled={isSubmitted}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <CustomInput
+                      name="city"
+                      label="City"
+                      disabled={isSubmitted}
+                      required
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <CustomSelect
+                      name="state"
+                      label="State"
+                      options={states}
+                      disabled={isSubmitted}
+                      required
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <CustomInput
+                      name="zipcode"
+                      label="Zip code"
+                      disabled={isSubmitted}
+                      required
+                    />
+                  </Grid>
                 </Grid>
-                <Grid item xs={12}>
-                  <CustomInput name="address1" label="Address 1" required />
+                <Grid
+                  container
+                  justifyContent="center"
+                  spacing={2}
+                  sx={{ mt: 2 }}
+                >
+                  <Grid item>
+                    <Button
+                      variant="outlined"
+                      disabled={!isSubmitted}
+                      onClick={() => setIsSubmitted(false)}
+                      size="large"
+                      startIcon={<BorderColorOutlinedIcon />}
+                    >
+                      Edit
+                    </Button>
+                  </Grid>
+                  <Grid item>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      disabled={isSubmitted}
+                      size="large"
+                      startIcon={<FileDownloadDoneIcon />}
+                    >
+                      Save
+                    </Button>
+                  </Grid>
                 </Grid>
-                <Grid item xs={12}>
-                  <CustomInput name="address2" label="Address 2" />
-                </Grid>
-                <Grid item xs={6}>
-                  <CustomInput name="city" label="City" required />
-                </Grid>
-                <Grid item xs={6}>
-                  <CustomSelect name="state" label="State" options={states} required />
-                </Grid>
-                <Grid item xs={12}>
-                  <CustomInput name="zip" label="Zip code" required />
-                </Grid>
-              </Grid>
-            </Form>
-          </Formik>
-          {/* FORM ENDS */}
-          <Grid container justifyContent="flex-end" spacing={2} sx={{ mt: 2 }}>
+              </Form>
+            </Formik>
+          )}
+        </Box>
+        {isSubmitted && (
+          <Grid container justifyContent="flex-end">
             <Grid item>
-              <Button 
-              variant="contained"
-              onClick={handleSubmit}
-              // disabled={isSubmitting}
-              >
-                Submit
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button type="submit" disabled variant="contained">
-                Edit
-              </Button>
+              <Link href="/quote" underline="hover" fontSize="large">
+                Get Fuel Quote<ArrowForwardIosIcon fontSize="small"/>
+              </Link>
             </Grid>
           </Grid>
-        </Box>
+        )}
       </Box>
     </Container>
   );
