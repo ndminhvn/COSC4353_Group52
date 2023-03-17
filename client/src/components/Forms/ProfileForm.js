@@ -12,9 +12,11 @@ import {
   Box,
   Button,
   CircularProgress,
+  Link,
 } from "@mui/material";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import FileDownloadDoneIcon from "@mui/icons-material/FileDownloadDone";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import userIcon from "../../assets/user.png";
 import CustomSelect from "./CustomSelect";
 import CustomInput from "./CustomInput";
@@ -106,7 +108,7 @@ function ProfileForm() {
     <Container component="main" maxWidth="sm">
       <Box
         sx={{
-          marginTop: 10,
+          marginTop: 8,
           marginBottom: 10,
           display: "flex",
           flexDirection: "column",
@@ -114,14 +116,17 @@ function ProfileForm() {
           bgcolor: "background.paper",
           boxShadow: 2,
           borderRadius: 2,
-          p: 4,
+          paddingX: 2,
+          paddingY: 4
+        
         }}
       >
         <img src={userIcon} width={90} height={90} alt="user profile" />
-        {/* <PersonPinIcon style={{ fontSize: "80px" }} /> */}
+
         <Typography
           variant="h4"
           sx={{
+            mt: 2,
             fontWeight: "bold",
             fontFamily: "Playfair Display",
             letterSpacing: "1px",
@@ -129,7 +134,7 @@ function ProfileForm() {
         >
           My Profile
         </Typography>
-        <Box sx={{ mt: 3 }}>
+        <Box sx={{ m: 3 }}>
           {/* FORM STARTS */}
           {isLoading ? (
             <CircularProgress />
@@ -142,7 +147,6 @@ function ProfileForm() {
             >
               <Form>
                 <Grid container spacing={2}>
-                  {/* Full name */}
                   <Grid item xs={12}>
                     <CustomInput
                       name="fullname"
@@ -151,7 +155,6 @@ function ProfileForm() {
                       required
                     />
                   </Grid>
-                  {/* Address 1 */}
                   <Grid item xs={12}>
                     <CustomInput
                       color="primary"
@@ -201,12 +204,12 @@ function ProfileForm() {
                   sx={{ mt: 2 }}
                 >
                   <Grid item>
-                    <Button 
-                    variant="outlined"
-                    disabled={!isSubmitted}
-                    onClick={() => setIsSubmitted(false)}
-                    size="large"
-                    startIcon={<BorderColorOutlinedIcon />}
+                    <Button
+                      variant="outlined"
+                      disabled={!isSubmitted}
+                      onClick={() => setIsSubmitted(false)}
+                      size="large"
+                      startIcon={<BorderColorOutlinedIcon />}
                     >
                       Edit
                     </Button>
@@ -227,6 +230,15 @@ function ProfileForm() {
             </Formik>
           )}
         </Box>
+        {isSubmitted && (
+          <Grid container justifyContent="flex-end">
+            <Grid item>
+              <Link href="/quote" underline="hover" fontSize="large">
+                Get Fuel Quote<ArrowForwardIosIcon fontSize="small"/>
+              </Link>
+            </Grid>
+          </Grid>
+        )}
       </Box>
     </Container>
   );
