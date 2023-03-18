@@ -11,30 +11,13 @@ router.get("/:username", async (req, res) => {
       `select * from users_info where username = '${username}'`
     );
     // send user info to client
-    res.status(201).json(results.rows[0]);
+    res.status(200).json(results.rows[0]);
   } catch (error) {
-    res.status(404).json({message: error.message});
+    res.status(404).send("Failed to fetch data...");
   }
 });
 
-// // Create profile
-// router.post("/:username", async (req, res) => {
-//   console.log(req.body);
-//   const { username } = req.params;
-//   const { fullname, address2, address1, city, state, zipcode } = req.body;
-//   try {
-//     const results = await db.query(
-//       "INSERT INTO users_info VALUES ($1, $2, $3, $4, $5, $6, $7) returning *",
-//       [username, fullname, address1, address2, city, state, zipcode]
-//     );
-
-//     res.status(200).json(results.rows[0]);
-//   } catch (error) {
-//     res.status(404).json({message: error.message});
-//   }
-// });
-
-// Update profile
+// Create/Update profile
 router.put("/:username", async (req, res) => {
   const { username } = req.params;
   const { fullname, address1, address2, city, state, zipcode } = req.body;
@@ -48,7 +31,7 @@ router.put("/:username", async (req, res) => {
     
     res.status(201).json(results.rows[0]);
   } catch (error) {
-    res.status(404).json({message: error.message});
+    res.status(404).json({msg: "Unable to update your profile. Please try again!"});
   }
 });
 
