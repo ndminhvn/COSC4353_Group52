@@ -10,7 +10,6 @@ const formatDate = (given_date) => {
     const date = new Date(given_date);
     const options = { year: 'numeric', month: '2-digit', day: 'numeric' };
     const formattedDate = date.toLocaleDateString('en-US', options);
-
     return formattedDate;
 }
 
@@ -18,7 +17,6 @@ const QuoteHistory = () => {
     const username = getToken();
     const navigate = useNavigate();
     const [message, setMessage] = useState('');
-
     const [quotes, setQuotes] = useState([]);
 
     // fetch user quote history
@@ -27,7 +25,6 @@ const QuoteHistory = () => {
             const res = await axios.get(`${BASE_URL}/history/${username}`);
             if (res.status === 201) {
                 const quoteHistory = res.data;
-                // console.log(quoteHistory);
                 setQuotes(quoteHistory);
             }
         } catch (error) {

@@ -56,10 +56,8 @@ const FuelQuoteForm = () => {
 
         if (quoteFormValid) {
             try {
-                // baseurl/quote/?username=eli&gallons=500
                 const res = await axios.get(`${BASE_URL}/quote/?username=${username}&gallons=${gallons}`)
                 if (res.status === 200) {
-                    // console.log("res:", res.data);
                     setQuote({ ...res.data, deliveryDate: selectedDate });
                     setQuoteValid(true);
                 }
@@ -83,8 +81,6 @@ const FuelQuoteForm = () => {
                 gallons: quote.gallons,
                 totalCost: quote.totalCost,
             }
-
-            // console.log("submit mergedData:", mergedData);
 
             const res = await axios.post(`${BASE_URL}/quote`, mergedData);
 
