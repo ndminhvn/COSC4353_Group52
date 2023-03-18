@@ -1,10 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
 .main-nav {
     /* position: fixed; */
 	/* border: 2px solid green; */
     width: 100%;
-	height: 15vh;
-    /* background-color: rgba(240, 248, 255, 0.95); */
-    /* box-shadow: 10px 10px 20px #ccc; */
+	height: 10vh;
+    background-color: rgb(255, 255, 255);
+    /* box-shadow: 5px 5px 10px #ccc; */
 }
 
 .App-logo {
@@ -43,7 +44,8 @@ button.navbar-toggler:focus {
     /* border: solid 1px red; */
     position: relative;
     /* color: black; */
-    font-family: 'Courier New', Courier, monospace;
+    /* font-family: 'Courier New', Courier, monospace; */
+    font-family: 'Playfair Display', serif;
     font-weight: 500;
     font-size: 23px;
     right: 8vw !important;

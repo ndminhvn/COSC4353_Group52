@@ -16,7 +16,19 @@ class PriceModule {
         this.gallonsRequested = gallonsRequested;
     }
 
+    rounded(num){
+        return Number((Math.round(( num + Number.EPSILON) * 100) / 100).toFixed(2));
+    }
+
     getQuote(){
+
+        let unitCost = this.getUnitCost();
+        let price = this.rounded(unitCost * this.gallonsRequested);
+        return price;
+
+    }
+
+    getUnitCost(){
 
         this.margin = this.crudePrice *
         ( 
@@ -25,10 +37,11 @@ class PriceModule {
             + this.amountFactor 
             + this.profitFactor
         )
+        let unitCost = this.rounded(this.crudePrice + this.margin);
+        return unitCost;
 
-        let price = (this.crudePrice + this.margin) * this.gallonsRequested;
-        return price;
     }
+
 }
 
 module.exports = PriceModule;

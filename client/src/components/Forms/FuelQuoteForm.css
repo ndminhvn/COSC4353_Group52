@@ -1,3 +1,24 @@
+#quote-page {
+    position: relative;
+    overflow: hidden;
+    /* border: 2px solid red; */
+    padding: 10px;
+    top: 10vh;
+}
+
+#bgImage {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    width: 100vw;
+    height: 90vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-blend-mode:darken;
+}
+
 h1 {
     color: black;
     font-family: 'Courier New', Courier, monospace;

@@ -8,6 +8,29 @@
     /* background: rgba(0, 0, 0, 0.3); */
 }
 
+#home-background {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    width: 100vw;
+    height: 90vh;
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover; /* Resize the background image to cover the entire container */
+    background-blend-mode:darken;
+    /* filter: blur(2px);
+    -webkit-filter: blur(2px); */
+}
+
+h1 {
+    color: white;
+    font-family: 'Courier New', Courier, monospace;
+    text-transform: uppercase;
+    font-weight: 600;
+    text-align: center;
+}
+
 .btn-group {
     /* border: 1px solid blue; */
     margin-top: 75px;

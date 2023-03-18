@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { BASE_URL } from '../../utils/constants.js';
 import axios from 'axios';
 import { getToken } from '../../utils/useToken.js';
+import bgImage from '../../assets/pages-bg.jpg';
+
 import './FuelQuoteForm.css'
 
 // test data for profile
@@ -111,21 +113,22 @@ const FuelQuoteForm = () => {
     }, [token, profile, fullDeliveryAddress, gallons, selectedDate, quoteFormValid, quoteValid, navigate]);
 
     return (
-        <>
-            <h1>Fuel Quote Form</h1>
-            <div className='form-container'>
-                <div className='container'>
-                    <form onSubmit={onGetQuote} style={{ 'padding': '10px' }}>
-                        <label className='label' htmlFor='requestedGallons' style={{ 'paddingTop': '0px' }}>
-                            Gallons Requested
-                        </label>
-                        <input
-                            type='number'
-                            id='requestedGallons'
-                            name='requestedGallons'
-                            placeholder='# of Gallons (100 min.)'
-                            min='100'
-                            onChange={(e) => setGallons(e.target.value)}
+        <div className="container">
+            <form>
+
+                {/* Date Picker */}
+                <div className="row">
+                    <div className="col-25">
+                        <label for="DatePicker">Date</label>
+                    </div>
+                    <div className="col-75">
+                        <DatePicker
+                            selected={selectedDate}
+                            onChange={newDate => setSelectedDate(newDate)}
+                            minDate={date}
+                            filterDate={date => date.getDay() !== 6 && date.getDay() !== 0} //filtered out weekends
+                            showYearDropdown
+                            scrollableMonthYearDropdown
                             required
                         />
                         <label className='label' htmlFor='deliveryDate'>
@@ -206,9 +209,14 @@ const FuelQuoteForm = () => {
                         </button>
                     </form>
                 </div>
-            </div>
-        </>
-    )
-}
+
+                {/* Request button -> confirm button */}
+                <button type="submit" class="btn btn-primary mb-2">Request Quote</button>
+
+
+            </form>
+        </div>
+    );
+};
 
 export default FuelQuoteForm;

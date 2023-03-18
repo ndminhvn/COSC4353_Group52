@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Box, Tab, TextField, Button, Typography } from '@mui/material';
 import { TabPanel, TabContext, TabList } from '@mui/lab';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { useNavigate } from "react-router-dom";
@@ -14,6 +14,8 @@ import './UserAuthForm.css';
 const LoginForm = () => {
   const [tab, setTab] = useState('1');
   const navigate = useNavigate();
+  const [loginResponse, setLoginResponse] = useState(); // api response (login) - used to display message to user
+  const [registerResponse, setRegisterResponse] = useState(); // api response (register) - used to display message to user
 
   const handleTabChange = (event, value) => {
     setTab(value);
@@ -46,7 +48,6 @@ const LoginForm = () => {
 
   const {
     register,
-    control,
     handleSubmit,
     formState: { errors }
   } = useForm({
@@ -54,8 +55,7 @@ const LoginForm = () => {
   });
 
   const { 
-    register: register1, 
-    control: control1, 
+    register: register1,
     handleSubmit: handleSubmit1, 
     formState: { errors: errors1 } 
   } = useForm({
@@ -63,33 +63,37 @@ const LoginForm = () => {
   })
 
   const onLogin = async (data) => {
-    console.log(JSON.stringify(data, null, 2));
-    await axios.post(`${BASE_URL}/user/login`, data)
+    // console.log(JSON.stringify(data, null, 2));
+    await axios.post(`${BASE_URL}/login`, data)
       .then(res => {
-        setToken(res.data);
-        alert('You have successfully logged in!');
-        navigate('/');
-        window.location.reload(true);
+        setToken(res.data.username);
+        setLoginResponse(`Welcome back, ${res.data.username}! You have successfully logged in.`);
+        setTimeout(() => {
+          navigate(res.data.navigateTo);
+          window.location.reload(true);
+        }, 1500);
       }).catch(error => {
-        console.error(error);
-        alert('Something went wrong. Please try again.');
+        setLoginResponse(error.response.data);
       })
   };
 
   const onRegister = async (data) => {
-    console.log(JSON.stringify(data, null, 2));
-    await axios.post(`${BASE_URL}/user/register`, data)
+    // console.log(JSON.stringify(data, null, 2));
+    await axios.post(`${BASE_URL}/register`, data)
       .then(res => {
         if (res.status === 200) {
-          alert('Successfully registered!');
-          navigate('/login')
-          window.location.reload(true);
-          // console.log('Successfully registered');
+          setRegisterResponse('Successfully registered!');
+          setTimeout(() => {
+            navigate('/login')
+            window.location.reload(true);
+          }, 1500);
         }
         else {
-          // console.log('Something went wrong. Please try again');
-          alert('Something went wrong. Please try again.');
+          setRegisterResponse(res.data);
         }
+      })
+      .catch(error => {
+        setRegisterResponse(error.response.data);
       })
   };
 
@@ -132,11 +136,10 @@ const LoginForm = () => {
               <TextField
                 required
                 fullWidth
-                name='username'
+                name='usernameLogin'
                 label='Username'
-                // type='text'
                 margin='normal'
-                {...register('username')}
+                {...register('usernameLogin')}
                 error={errors.firstName ? true : false}
               />
               <Typography variant="inherit" color="textSecondary">
@@ -147,7 +150,6 @@ const LoginForm = () => {
                 required
                 fullWidth
                 name='passwordLogin'
-                // control={control}
                 label='Password'
                 type='password'
                 autoComplete='currentPassword'
@@ -168,6 +170,11 @@ const LoginForm = () => {
               >
                 Login
               </Button>
+              {(loginResponse) && 
+                <i style={{color: loginResponse.includes('You have successfully logged in.') ? 'green' : 'red'}}>
+                  <p className='text-center'>{loginResponse}</p>
+                </i>
+              }
               <p className="text-center">Not a client yet? <a href='#register' onClick={() => setTab('2')}>
                   Register Now!
                 </a>
@@ -182,11 +189,10 @@ const LoginForm = () => {
               <TextField
                 required
                 fullWidth
-                name='username'
+                name='usernameRegister'
                 label='Username'
-                // type='text'
                 margin='normal'
-                {...register1('username')}
+                {...register1('usernameRegister')}
                 error={errors1.firstName ? true : false}
               />
               <Typography variant="inherit" color="textSecondary">
@@ -196,7 +202,6 @@ const LoginForm = () => {
                 required
                 fullWidth
                 name='passwordRegister'
-                // control={control}
                 label='Password'
                 type='password'
                 autoComplete='currentPassword'
@@ -229,10 +234,14 @@ const LoginForm = () => {
                 variant='contained' 
                 color='success' 
                 size='lg'
-                // onClick={handleSubmit1(onSubmit1)}
               >
                 Register
               </Button>
+              {(registerResponse) && 
+                <i style={{color: registerResponse === 'Successfully registered!' ? 'green' : 'red'}}>
+                  <p className='text-center'>{registerResponse}</p>
+                </i>
+              }
               <p className="text-center"><a href='#login' onClick={() => setTab('1')}>Back to Login</a></p>
             </form>
           </TabPanel>
