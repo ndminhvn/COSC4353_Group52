@@ -4,8 +4,13 @@ const pool = require('../database/dbCreds');
 
 // Get user fuel quote history
 router.get("/:username", async (req, res) => {
-    const { username } = req.params;
     try {
+        const { username } = req.params;
+
+        if(username == null) {
+            throw new Error({ message: "Invalid URL query" });
+        }
+
         const results = await pool.query(
             `select * from order_history where username = '${username}'`
         );
