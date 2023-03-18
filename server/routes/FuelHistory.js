@@ -1,12 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const historyData = require('./mock-fqhistory.json');
+const pool = require('../database/dbCreds');
 
-router.get("/", async (req, res) => {
+// Get user fuel quote history
+router.get("/:username", async (req, res) => {
+    const { username } = req.params;
     try {
-        res.json(historyData);
+        const results = await pool.query(
+            `select * from order_history where username = '${username}'`
+        );
+        // send history data back to client
+        return res.status(201).json(results.rows);
     } catch (error) {
-        console.error(error.message);
+        return res.status(404).json({ message: error.message });
     }
 });
 

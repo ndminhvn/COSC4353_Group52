@@ -76,7 +76,7 @@ router.post("/", async (req, res) => {
 
     try {
 
-        // Handle incomming data
+        // Handle incoming data
         let orderDate = new Date().toISOString().slice(0, 10);
         const { username, deliveryDate, deliveryAddress, unitCost, gallons, totalCost } = req.body;
 
@@ -89,7 +89,6 @@ router.post("/", async (req, res) => {
             [username, orderDate, deliveryDate, deliveryAddress, unitCost, gallons, totalCost]);
 
         return res.status(201).send("Success saving purchase");
-
 
     } catch (error) {
         return res.status(400).send(error);
