@@ -4,7 +4,7 @@ import { Navbar, Nav, Image } from 'react-bootstrap';
 import { Link, Tooltip, Menu, MenuItem, Typography } from '@mui/material';
 import { getToken, removeToken } from '../../utils/useToken.js';
 
-import logo from '../../assets/logo.png';
+// import logo from '../../assets/logo.png';
 import logo2 from '../../assets/logo2.png';
 
 import './Navbar.css';
@@ -33,12 +33,12 @@ const NavBar = () => {
 				/>
 			</Navbar.Brand>
 
-			<Navbar.Toggle style={{marginRight: '10vw'}} aria-controls='responsive-navbar-nav'>
+			<Navbar.Toggle style={{ marginRight: '5vw' }} aria-controls='responsive-navbar-nav'>
 				<i className='fas fa-bars fa-lg'></i>
 			</Navbar.Toggle>
 
 			<Navbar.Collapse id='responsive-navbar-nav' className='justify-content-end'>
-				<Nav navbar className="d-flex align-items-center bg-white justify-content-center text-center">
+				<Nav navbar className="align-items-center">
 					<Link href='/quote' className='nav-link' color='black' underline='none'>Rate Predictor</Link>
 					{(!token) ? 
 						<Link href='/login' className='nav-link' color='black' underline='none'>Login</Link>
