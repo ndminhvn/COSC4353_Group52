@@ -13,7 +13,10 @@ import {
   Button,
   CircularProgress,
   Link,
+  CircularProgress,
+  Link,
 } from "@mui/material";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import FileDownloadDoneIcon from "@mui/icons-material/FileDownloadDone";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -45,6 +48,14 @@ const userSchema = Yup.object({
     .required("Required"),
 });
 
+const theme = createTheme({
+  palette: {
+    text: {
+      disabled: "main",
+    },
+  },
+});
+
 function ProfileForm() {
   // get username = token
   const username = getToken();
@@ -52,22 +63,23 @@ function ProfileForm() {
   const [userData, setUserData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [message, setMessage] = useState();
 
   // fetch user profile
   const fetchData = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/account/${username}`);
-      if (res.status === 201) {
+      // successfull request
+      if (res.status === 200) {
         setUserData(Object.assign(userData, res.data));
-        console.log("initial data", userData);
+        // console.log("initial data", userData);
       }
       if (userData.fullname) {
         setIsSubmitted(true);
       }
       setIsLoading(false);
     } catch (error) {
-      alert("Failed to fetch data");
-      console.log(error);
+      setMessage(error.message.data);
     }
   };
 
@@ -80,12 +92,11 @@ function ProfileForm() {
     try {
       const res = await axios.put(`${BASE_URL}/account/${username}`, data);
       if (res.status === 201) {
-        console.log("new data", res.data);
+        // console.log("new data", newProfile);
         return res.data;
       }
     } catch (error) {
-      alert("Cannot update your profile :(");
-      console.log(error);
+      setMessage(error.response.data);
     }
   };
 
@@ -99,148 +110,161 @@ function ProfileForm() {
   };
 
   const handleSubmit = async (values) => {
+    // Pass user input into update function to make PUT request
     const newProfile = await updateUser(values);
-    alert("Profile updated!");
+    setMessage("Profile updated!");
     setIsSubmitted(true);
   };
 
   return (
-    <Container component="main" maxWidth="sm">
-      <Box
-        sx={{
-          marginTop: 8,
-          marginBottom: 10,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          bgcolor: "background.paper",
-          boxShadow: 2,
-          borderRadius: 2,
-          paddingX: 2,
-          paddingY: 4
-        
-        }}
-      >
-        <img src={userIcon} width={90} height={90} alt="user profile" />
-
-        <Typography
-          variant="h4"
+    <ThemeProvider theme={theme}>
+      <Container component="main" maxWidth="sm">
+        <Box
           sx={{
-            mt: 2,
-            fontWeight: "bold",
-            fontFamily: "Playfair Display",
-            letterSpacing: "1px",
+            marginTop: 8,
+            marginBottom: 10,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            bgcolor: "background.paper",
+            boxShadow: 2,
+            borderRadius: 2,
+            paddingX: 2,
+            paddingY: 4,
           }}
         >
-          My Profile
-        </Typography>
-        <Box sx={{ m: 3 }}>
-          {/* FORM STARTS */}
-          {isLoading ? (
-            <CircularProgress />
-          ) : (
-            <Formik
-              initialValues={initialValues}
-              validationSchema={userSchema}
-              // enableReinitialize
-              onSubmit={handleSubmit}
+          <img src={userIcon} width={90} height={90} alt="user profile" />
+
+          <Typography
+            variant="h4"
+            gutterBottom
+            sx={{
+              mt: 2,
+              fontWeight: "bold",
+              fontFamily: "Playfair Display",
+              letterSpacing: "1px",
+            }}
+          >
+            My Profile
+          </Typography>
+          {message && (
+            <i
+              style={{
+                color: message === "Profile updated!" ? "green" : "red",
+              }}
             >
-              <Form>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <CustomInput
-                      name="fullname"
-                      label="Full Name"
-                      disabled={isSubmitted}
-                      required
-                    />
+              <p className="text-center">{message}</p>
+            </i>
+          )}
+
+          <Box sx={{ m: 3 }}>
+            {/* FORM STARTS */}
+            {isLoading ? (
+              <CircularProgress />
+            ) : (
+              <Formik
+                initialValues={initialValues}
+                validationSchema={userSchema}
+                onSubmit={handleSubmit}
+              >
+                <Form>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      <CustomInput
+                        name="fullname"
+                        label="Full Name"
+                        disabled={isSubmitted}
+                        required
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <CustomInput
+                        color="primary"
+                        name="address1"
+                        label="Address 1"
+                        disabled={isSubmitted}
+                        required
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <CustomInput
+                        name="address2"
+                        label="Address 2"
+                        disabled={isSubmitted}
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <CustomInput
+                        name="city"
+                        label="City"
+                        disabled={isSubmitted}
+                        required
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <CustomSelect
+                        name="state"
+                        label="State"
+                        options={states}
+                        disabled={isSubmitted}
+                        required
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <CustomInput
+                        name="zipcode"
+                        label="Zip code"
+                        disabled={isSubmitted}
+                        required
+                      />
+                    </Grid>
                   </Grid>
-                  <Grid item xs={12}>
-                    <CustomInput
-                      color="primary"
-                      name="address1"
-                      label="Address 1"
-                      disabled={isSubmitted}
-                      required
-                    />
+                  <Grid
+                    container
+                    justifyContent="center"
+                    spacing={2}
+                    sx={{ mt: 2 }}
+                  >
+                    <Grid item>
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        disabled={isSubmitted}
+                        size="large"
+                        startIcon={<FileDownloadDoneIcon />}
+                      >
+                        Save
+                      </Button>
+                    </Grid>
+                    <Grid item>
+                      <Button
+                        variant="outlined"
+                        disabled={!isSubmitted}
+                        onClick={() => setIsSubmitted(false)}
+                        size="large"
+                        startIcon={<BorderColorOutlinedIcon />}
+                      >
+                        Edit
+                      </Button>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={12}>
-                    <CustomInput
-                      name="address2"
-                      label="Address 2"
-                      disabled={isSubmitted}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <CustomInput
-                      name="city"
-                      label="City"
-                      disabled={isSubmitted}
-                      required
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <CustomSelect
-                      name="state"
-                      label="State"
-                      options={states}
-                      disabled={isSubmitted}
-                      required
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <CustomInput
-                      name="zipcode"
-                      label="Zip code"
-                      disabled={isSubmitted}
-                      required
-                    />
-                  </Grid>
-                </Grid>
-                <Grid
-                  container
-                  justifyContent="center"
-                  spacing={2}
-                  sx={{ mt: 2 }}
-                >
-                  <Grid item>
-                    <Button
-                      variant="outlined"
-                      disabled={!isSubmitted}
-                      onClick={() => setIsSubmitted(false)}
-                      size="large"
-                      startIcon={<BorderColorOutlinedIcon />}
-                    >
-                      Edit
-                    </Button>
-                  </Grid>
-                  <Grid item>
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      disabled={isSubmitted}
-                      size="large"
-                      startIcon={<FileDownloadDoneIcon />}
-                    >
-                      Save
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Form>
-            </Formik>
+                </Form>
+              </Formik>
+            )}
+          </Box>
+          {isSubmitted && (
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                <Link href="/quote" underline="hover" fontSize="large">
+                  Get Fuel Quote
+                  <ArrowForwardIosIcon fontSize="small" />
+                </Link>
+              </Grid>
+            </Grid>
           )}
         </Box>
-        {isSubmitted && (
-          <Grid container justifyContent="flex-end">
-            <Grid item>
-              <Link href="/quote" underline="hover" fontSize="large">
-                Get Fuel Quote<ArrowForwardIosIcon fontSize="small"/>
-              </Link>
-            </Grid>
-          </Grid>
-        )}
-      </Box>
-    </Container>
+      </Container>
+    </ThemeProvider>
   );
 }
 
