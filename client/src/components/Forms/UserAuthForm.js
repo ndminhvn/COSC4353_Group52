@@ -100,6 +100,7 @@ const LoginForm = () => {
   return (
     <Container maxWidth='md'>
       <Box
+        id='login-box'
         backgroundColor='rgb(255, 255, 255)'
         display='flex'
         fluid='true'
