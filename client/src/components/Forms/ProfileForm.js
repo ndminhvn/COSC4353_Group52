@@ -12,9 +12,7 @@ import {
   Box,
   Button,
   CircularProgress,
-  Link,
-  CircularProgress,
-  Link,
+  Link
 } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
@@ -69,7 +67,7 @@ function ProfileForm() {
   const fetchData = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/account/${username}`);
-      // successfull request
+      // successful request
       if (res.status === 200) {
         setUserData(Object.assign(userData, res.data));
         // console.log("initial data", userData);
@@ -111,7 +109,8 @@ function ProfileForm() {
 
   const handleSubmit = async (values) => {
     // Pass user input into update function to make PUT request
-    const newProfile = await updateUser(values);
+    // const newProfile = await updateUser(values);
+    await updateUser(values);
     setMessage("Profile updated!");
     setIsSubmitted(true);
   };
