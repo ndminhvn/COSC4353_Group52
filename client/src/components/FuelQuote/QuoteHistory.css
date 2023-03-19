@@ -11,17 +11,3 @@ h1 {
 .MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows {
     margin-bottom: 0px;
 }
-
-#bgImage {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    z-index: -1;
-    width: 100vw;
-    height: 90vh;
-    background-position: center;
-    background-repeat: no-repeat; 
-    background-size: cover; 
-    background-blend-mode:darken;
-
-}

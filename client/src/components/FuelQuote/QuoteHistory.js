@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { BASE_URL } from '../../utils/constants.js';
 import { getToken, removeToken } from '../../utils/useToken.js';
-import bgImage from '../../assets/pages-bg.jpg';
 
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
@@ -98,9 +97,8 @@ const QuoteHistory = () => {
 
         return (
             <>
-                <img src={bgImage} alt='bgImage' id='bgImage' />
                 <h1>Fuel Quote History</h1>
-                <Paper sx={{ width: '99%', margin: 'auto', overflow: 'hidden' }}>
+                <Paper sx={{ width: '97%', margin: 'auto', overflow: 'hidden' }}>
                     <TableContainer>
                         <Table sx={{ minWidth: 700 }} aria-label="customized table">
                             <TableHead>
