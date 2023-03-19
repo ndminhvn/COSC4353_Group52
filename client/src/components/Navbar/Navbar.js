@@ -5,6 +5,7 @@ import { Link, Tooltip, Menu, MenuItem, Typography } from '@mui/material';
 import { getToken, removeToken } from '../../utils/useToken.js';
 
 import logo from '../../assets/logo.png';
+import logo2 from '../../assets/logo2.png';
 
 import './Navbar.css';
 
@@ -27,7 +28,7 @@ const NavBar = () => {
 			<Navbar.Brand href='/' style={{marginLeft:'10vw'}}>
 				<Image 
 					fluid 
-					className='App-logo shadow-sm' alt='logo' 
+					className='App-logo' alt='logo' 
 					src={logo} 
 				/>
 			</Navbar.Brand>

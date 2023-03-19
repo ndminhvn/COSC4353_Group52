@@ -1,20 +1,38 @@
-import { useField } from "formik"
+import { useField, useFormikContext } from "formik"
+import { TextField, MenuItem } from "@mui/material"
 
-function CustomInput({label, ...props}) {
-  const [field, meta] = useField(props)
-  // console.log(field, meta)
-  return (
-    <div className="mb-2">
-      <label htmlFor={field.name}>{label}</label>
-      <select
-        {...field}
-        {...props}
-        autoComplete="off"
-        className={`form-control shadow-none ${meta.touched && meta.error ? "input-error" : ""}`}
-      />
-      {meta.touched && meta.error && <div className="error">{meta.error}</div>}
-    </div>
-  )
+function CustomSelect({name, options, ...props}){
+  const { setFieldValue } = useFormikContext()
+  const [field, meta] = useField(name)
+
+  const handleChange = e => {
+    const { value } = e.target
+    setFieldValue(name, value)
+  }
+
+  const configSelect = {
+    ...field,
+    ...props,
+    select: true,
+    fullWidth: true,
+    variant: 'outlined',
+    onChange: handleChange
+  }
+
+  if (meta && meta.touched && meta.error){
+    configSelect.error = true
+    configSelect.helperText = meta.error
+  }
+
+  return <TextField {...configSelect}>
+    {options.map((option, key) => {
+      return (
+        <MenuItem key={key} value={option}>
+          {option}
+        </MenuItem>
+      )
+    })}
+  </TextField>
 }
 
-export default CustomInput
+export default CustomSelect

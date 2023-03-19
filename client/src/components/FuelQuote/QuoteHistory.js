@@ -1,10 +1,16 @@
-import React, {useState, useEffect } from 'react';
-import { BASE_URL } from '../../utils/constants.js';
+import React, {useState, useEffect} from 'react';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+import { BASE_URL } from '../../utils/constants.js';
+import { getToken } from '../../utils/useToken.js';
 
 import './QuoteHistory.css';
 
 const QuoteHistory = () => {
+	const token = getToken();
+    const navigate = useNavigate();
+    const [message, setMessage] = useState('');
+
     const [quotes, setQuotes] = useState([]);
 
     const getHistory = async () => {
@@ -21,9 +27,28 @@ const QuoteHistory = () => {
     useEffect(() => {
         getHistory();
     },[]);
+
+    // check if user has logged in
+    useEffect(() => {
+        if (!token) {
+          setMessage('Our system detected that you are not logged in yet. Redirecting to the login screen ...');
+          setTimeout(() => {
+            navigate('/login', { replace: true });
+            window.location.reload(true);
+          }, 1500);
+        }
+    }, [token, navigate]);
     
-    return (
-        <>
+    if (!token) {
+        return (
+            <h3 className='text-center' style={{marginTop: '20vh'}}>
+                {message && <p>{message}</p>}
+            </h3>
+        )
+    }
+    else {
+        return (
+            <>
             <div className="quote-history-container md-5">
                 <table className="table table-striped caption-top">
                     <caption className="text-center">Fuel Quote History</caption>
@@ -92,8 +117,9 @@ const QuoteHistory = () => {
                     {quotes.length === 0 && <p className="ps-2 m-auto">No History</p>}
                 </table>
             </div>
-        </>
-    );
+            </>
+        );
+    }
 }
 
 export default QuoteHistory;
