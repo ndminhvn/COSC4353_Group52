@@ -11,7 +11,7 @@ router.get("/:username", async (req, res) => {
       `select * from users_info where username = '${username}'`
     );
     // send user info to client
-    res.status(200).json(results.rows[0]);
+    res.status(201).json(results.rows[0]);
   } catch (error) {
     res.status(404).send("Failed to fetch data...");
   }

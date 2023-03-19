@@ -22,16 +22,16 @@ router.post("/", async (req, res) => {
                     INSERT INTO users_info (username)
                     VALUES ('${username}');`
                 );
-                res.status(200).send(username);
+                return res.status(200).send(username);
             } catch (error) {
-                res.status(201).send("Error while adding this user.", error);
+                return res.status(201).send("Error while adding this user.");
             }
         }
         else {
-            res.status(400).send("Username already existed. Please log in.");
+            return res.status(400).send("Username already existed. Please log in.");
         }
     } catch (error) {
-        res.status(500).send("Error occurred while adding a new user. Please try again!");
+        return res.status(500).send("Error occurred while adding a new user. Please try again!");
     }
 });
 

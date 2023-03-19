@@ -4,34 +4,41 @@ const pool = require('../database/dbCreds');
 const bcrypt = require("bcrypt");
 
 router.post("/", async(req, res) => {
-    const username = req.body.usernameLogin
-    const password = req.body.passwordLogin
-    // console.log(username, password)
-
     try {
-        // Check if user exists
-        const existingUser = await pool.query(
-            `SELECT * FROM users 
-            WHERE username = '${username}'`);
-        
-        // console.log(existingUser.rows[0])
+        const username = req.body.usernameLogin;
 
-        if (!existingUser)
-            return res.status(404).send("User doesn't exist.")
+        let existingUser = await pool.query(
+            `SELECT a.username, a.password, b.fullname 
+                FROM users a JOIN users_info b 
+                ON a.username = b.username
+                WHERE a.username = '${username}'`);
+
+        if (existingUser.rows.length === 0) {
+            return res.status(404).send("Username not found.");
+        }
+        else {
+            // Check if password entered is correct
+            let correctPassword = existingUser.rows[0].password;
+            let isPasswordCorrect = await bcrypt.compare(req.body.passwordLogin, correctPassword);
             
-        // console.log('User registered. Proceed to check password')
+            if (!isPasswordCorrect) {
+                return res.status(400).send("Incorrect password.");
+            }
+            else {
+                // check if the user is a first time user 
+                // (if the fullName is null then this is a first time user)
+                let fullName = existingUser.rows[0].fullname;
 
-        // Check if password entered is correct
-        correctPassword = existingUser.rows[0].password
-        const isPasswordCorrect = await bcrypt.compare(password, correctPassword)
-        
-        if (!isPasswordCorrect)
-            return res.status(400).send("Incorrect password.")
-
-        res.status(200).send(username)
-
+                if (fullName == null) {
+                    return res.status(200).send({ username, navigateTo: '/account' });
+                }
+                else return res.status(200).send({ username, navigateTo: '/'});
+            }
+        }
     } catch(err) {
-        res.status(500).json({ message: err.message})
+        // res.status(500).json({ message: err.message})
+        // console.console.error();
+        return res.status(500).send("Something went wrong. Please try again!");
     }
 });
 
