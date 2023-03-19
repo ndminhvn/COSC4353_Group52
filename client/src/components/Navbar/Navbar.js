@@ -29,17 +29,16 @@ const NavBar = () => {
 				<Image 
 					fluid 
 					className='App-logo' alt='logo' 
-					src={logo} 
+					src={logo2} 
 				/>
 			</Navbar.Brand>
 
-			<Navbar.Toggle aria-controls='responsive-navbar-nav'>
-				{' '}
+			<Navbar.Toggle style={{marginRight: '10vw'}} aria-controls='responsive-navbar-nav'>
 				<i className='fas fa-bars fa-lg'></i>
 			</Navbar.Toggle>
 
-			<Navbar.Collapse className='justify-content-end'>
-				<Nav>
+			<Navbar.Collapse id='responsive-navbar-nav' className='justify-content-end'>
+				<Nav navbar className="d-flex align-items-center bg-white justify-content-center text-center">
 					<Link href='/quote' className='nav-link' color='black' underline='none'>Rate Predictor</Link>
 					{(!token) ? 
 						<Link href='/login' className='nav-link' color='black' underline='none'>Login</Link>

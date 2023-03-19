@@ -1,6 +1,8 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css');
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+
 .main-nav {
-    /* position: fixed; */
+    position: sticky;
 	/* border: 2px solid green; */
     width: 100%;
 	height: 10vh;
@@ -36,7 +38,7 @@
 	border: none !important;
 }
 
-button.navbar-toggler:focus {
+.navbar-toggler:focus {
 	outline: none;
 }
 
