@@ -107,12 +107,11 @@ const LoginForm = () => {
         alignItems='center'
         justifyContent={'center'}
         margin='auto'
-        marginTop={5}
+        marginBottom={5}
         padding={3}
         borderRadius={6}
         boxShadow={'5px 5px 10px #ccc'}
         sx={{ width: '50%',
-              borderBottom: 1, 
               borderColor: 'divider',
               ':hover': {
                 boxShadow: '10px 10px 20px #ccc'
