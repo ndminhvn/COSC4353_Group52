@@ -10,8 +10,12 @@ router.get("/:username", async (req, res) => {
     const results = await db.query(
       `select * from users_info where username = '${username}'`
     );
+    // No username found
+    if (results.rows.length == 0) {
+      throw new Error();
+    }
     // send user info to client
-    res.status(201).json(results.rows[0]);
+    res.status(200).json(results.rows[0]);
   } catch (error) {
     res.status(404).send("Failed to fetch data...");
   }
@@ -28,7 +32,10 @@ router.put("/:username", async (req, res) => {
       WHERE username=$7 returning *",
       [fullname, address1, address2, city, state, zipcode, username]
     );
-    
+    // No username found
+    if (results.rows.length == 0) {
+      throw new Error();
+    }
     res.status(201).json(results.rows[0]);
   } catch (error) {
     res.status(404).json({msg: "Unable to update your profile. Please try again!"});
