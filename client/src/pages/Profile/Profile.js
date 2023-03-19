@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import { useNavigate } from "react-router-dom";
-import UserProfile from '../../components/Forms/UserProfile';
 import { getToken } from '../../utils/useToken.js';
 import ProfileForm from '../../components/Forms/ProfileForm';
 import background from '../../assets/pages-bg.jpg';
