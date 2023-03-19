@@ -2,7 +2,7 @@ import { React, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { BASE_URL } from '../../utils/constants.js';
 import axios from 'axios';
-import { getToken } from '../../utils/useToken.js';
+import { getToken, removeToken } from '../../utils/useToken.js';
 import bgImage from '../../assets/pages-bg.jpg';
 
 import './FuelQuoteForm.css'
@@ -113,7 +113,7 @@ const FuelQuoteForm = () => {
 
     useEffect(() => {
         if (!username) {
-            localStorage.clear();
+            removeToken();
             navigate('/login');
             window.location.reload(true);
         } else {
