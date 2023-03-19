@@ -2,19 +2,10 @@ import { React, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { BASE_URL } from '../../utils/constants.js';
 import axios from 'axios';
-import { getToken } from '../../utils/useToken.js';
+import { getToken, removeToken } from '../../utils/useToken.js';
 import bgImage from '../../assets/pages-bg.jpg';
 
 import './FuelQuoteForm.css'
-
-// test data for profile
-const testProfile = {
-    address: '12345 Kingstone Boulevard',
-    address2: '',
-    city: 'Houston',
-    state: 'TX',
-    zip: '77072',
-}
 
 const getMinDeliveryDays = () => {
     let curDate = new Date();
@@ -24,9 +15,7 @@ const getMinDeliveryDays = () => {
 
 const FuelQuoteForm = () => {
     const navigate = useNavigate();
-    const username = localStorage.getItem('username');
-    // const token = getToken();
-    const token = true; // test token
+    const username = getToken();
 
     const [gallons, setGallons] = useState('');
     const [selectedDate, setSelectedDate] = useState('');
@@ -35,18 +24,18 @@ const FuelQuoteForm = () => {
     const [fullDeliveryAddress, setFullDeliveryAddress] = useState('');
 
     const [profile, setProfile] = useState({
-        address: '',
+        address1: '',
         address2: '',
         city: '',
         state: '',
-        zip: '',
+        zipcode: '',
     });
 
     const [quote, setQuote] = useState({
         gallons: '0',
         deliveryDate: '',
-        price: '0',
-        total: '0',
+        unitCost: '0',
+        totalCost: '0',
     });
 
     const onSelectedDate = (e) => {
@@ -66,40 +55,69 @@ const FuelQuoteForm = () => {
         e.preventDefault();
 
         if (quoteFormValid) {
-
-            // await axios.get(`${BASE_URL}/${username}/${gallons}`)
-            // .then(res => {
-            //     setQuote(res.data);
-            // })
-
-            setQuote({
-                gallons: gallons,
-                deliveryDate: selectedDate,
-                price: '1.67', // get from backend
-                total: '999.999' // get from backend
-            });
-
-            setQuoteValid(true);
+            try {
+                const res = await axios.get(`${BASE_URL}/quote/?username=${username}&gallons=${gallons}`)
+                if (res.status === 200) {
+                    setQuote({ ...res.data, deliveryDate: selectedDate });
+                    setQuoteValid(true);
+                }
+            } catch (error) {
+                alert("Failed to get quote");
+                console.log(error);
+                setQuoteValid(false);
+            }
         }
     }
 
     const onQuoteSubmit = async (e) => {
         e.preventDefault();
 
-        const mergedData = { ...profile, ...quote, username }; // data to submit to the backend server
+        try {
+            const mergedData = {
+                username: username,
+                deliveryDate: quote.deliveryDate,
+                deliveryAddress: fullDeliveryAddress,
+                unitCost: quote.unitCost,
+                gallons: quote.gallons,
+                totalCost: quote.totalCost,
+            }
 
-        console.log("submit mergedData:", mergedData);
+            const res = await axios.post(`${BASE_URL}/quote`, mergedData);
+
+            if (res.status === 201) {
+                alert(res.data);
+                setTimeout(() => {
+                    navigate('/history');
+                    window.location.reload(true);
+                }, 1000);
+            }
+        } catch (error) {
+            alert("Failed to submit quote");
+            console.log(error);
+        }
     }
 
-    useEffect(() => {
+    // fetch user profile
+    const fetchProfile = async () => {
+        try {
+            const res = await axios.get(`${BASE_URL}/account/${username}`);
+            if (res.status === 201) {
+                setProfile(Object.assign(profile, res.data));
+                setFullDeliveryAddress(`${profile.address1}, ${profile.city}, ${profile.state}, ${profile.zipcode}`);
+            }
+        } catch (error) {
+            alert("Failed to fetch data");
+            console.log(error);
+        }
+    };
 
-        if (!token) {
-            localStorage.clear();
+    useEffect(() => {
+        if (!username) {
+            removeToken();
             navigate('/login');
             window.location.reload(true);
         } else {
-            setProfile(testProfile); // will get from http get call later on
-            setFullDeliveryAddress(`${profile.address}, ${profile.city}, ${profile.state}, ${profile.zip}`);
+            fetchProfile();
 
             const checkFormValidity = () => {
                 if (gallons !== '' && selectedDate !== '') {
@@ -110,7 +128,7 @@ const FuelQuoteForm = () => {
             }
             checkFormValidity();
         }
-    }, [token, profile, fullDeliveryAddress, gallons, selectedDate, quoteFormValid, quoteValid, navigate]);
+    }, [username, profile, fullDeliveryAddress, gallons, selectedDate, quoteFormValid, quoteValid, navigate]);
 
     return (
         <div id='quote-page'>
@@ -188,7 +206,7 @@ const FuelQuoteForm = () => {
                             type='text'
                             id='staticPricePerGallon'
                             name='staticPricePerGallon'
-                            value={`$ ${parseFloat(quote.price).toFixed(2)}`}
+                            value={`$ ${parseFloat(quote.unitCost).toFixed(2)}`}
                             readOnly className='form-control-plaintext'
                             style={{ 'padding': '0px', 'margin': '0px', 'textAlign': 'center' }}
                         />
@@ -200,7 +218,7 @@ const FuelQuoteForm = () => {
                             id='staticPriceDue'
                             name='staticPriceDue'
                             placeholder='$'
-                            value={`$ ${parseFloat(quote.total).toFixed(2)}`}
+                            value={`$ ${parseFloat(quote.totalCost).toFixed(2)}`}
                             readOnly className='form-control-plaintext'
                             style={{ 'padding': '0px', 'margin': '0px', 'textAlign': 'center' }}
                         />

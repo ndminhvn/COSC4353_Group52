@@ -1,12 +1,13 @@
-.table {
-    margin: 0 auto;
-    border: 2px solid darkgray;
-    width: 85%;
-}
-
-caption {
-    color: black;
+h1 {
+    color: rgb(49 49 49);
     font-family: 'Courier New', Courier, monospace;
     font-size: 25px;
     text-shadow: 1px 1px 2px lightgrey;
+    text-align: center;
+    padding-top: 10px;
+    font-weight: bold;
+}
+
+.MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows {
+    margin-bottom: 0px;
 }
