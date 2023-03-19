@@ -2,9 +2,37 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { BASE_URL } from '../../utils/constants.js';
-import { getToken } from '../../utils/useToken.js';
+import { getToken, removeToken } from '../../utils/useToken.js';
+import bgImage from '../../assets/pages-bg.jpg';
+
+import { styled } from '@mui/material/styles';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import TablePagination from '@mui/material/TablePagination';
 
 import './QuoteHistory.css';
+
+const StyledTableCell = styled(TableCell)(() => ({
+    [`&.${tableCellClasses.head}`]: {
+        backgroundColor: "#c1c9d4cc",
+        color: "black",
+        fontSize: 16,
+    },
+    [`&.${tableCellClasses.body}`]: {
+        fontSize: 15,
+    },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    '&:nth-of-type(odd)': {
+        backgroundColor: theme.palette.action.hover,
+    }
+}));
 
 const formatDate = (given_date) => {
     const date = new Date(given_date);
@@ -18,6 +46,18 @@ const QuoteHistory = () => {
     const navigate = useNavigate();
     const [message, setMessage] = useState('');
     const [quotes, setQuotes] = useState([]);
+
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
+    };
 
     // fetch user quote history
     const fetchHistory = async () => {
@@ -33,18 +73,17 @@ const QuoteHistory = () => {
         }
     };
 
-    useEffect(() => {
-        fetchHistory();
-    }, []);
-
     // check if user has logged in
     useEffect(() => {
         if (!username) {
+            removeToken();
             setMessage('Our system detected that you are not logged in yet. Redirecting to the login screen ...');
             setTimeout(() => {
                 navigate('/login', { replace: true });
                 window.location.reload(true);
             }, 1500);
+        } else {
+            fetchHistory();
         }
     }, [username, navigate]);
 
@@ -56,36 +95,49 @@ const QuoteHistory = () => {
         )
     }
     else {
+
         return (
             <>
-                <div className="quote-history-container md-5">
-                    <table className="table table-striped caption-top">
-                        <caption className="text-center">Fuel Quote History</caption>
-                        <thead>
-                            <tr>
-                                <th scope="col">Order Date</th>
-                                <th scope="col">Gallons Requested</th>
-                                <th scope="col">Delivery Address</th>
-                                <th scope="col">Delivery Date</th>
-                                <th scope="col">Suggested Price/Gallon</th>
-                                <th scope="col">Total Price</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {quotes.map(quote => (
-                                <tr key={quote.order_id}>
-                                    <td>{formatDate(quote.purchase_date)}</td>
-                                    <td>{quote.gallons_amount}</td>
-                                    <td>{quote.delivery_address}</td>
-                                    <td>{formatDate(quote.delivery_date)}</td>
-                                    <td>${parseFloat(quote.unit_cost).toFixed(2)}</td>
-                                    <td>${parseFloat(quote.total_cost).toFixed(2)}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                        {quotes.length === 0 && <p className="ps-2 m-auto">No History</p>}
-                    </table>
-                </div>
+                <img src={bgImage} alt='bgImage' id='bgImage' />
+                <h1>Fuel Quote History</h1>
+                <Paper sx={{ width: '99%', margin: 'auto', overflow: 'hidden' }}>
+                    <TableContainer>
+                        <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                            <TableHead>
+                                <TableRow>
+                                    <StyledTableCell align="center">Order Date</StyledTableCell>
+                                    <StyledTableCell align="center">Gallons Requested</StyledTableCell>
+                                    <StyledTableCell align="center">Delivery Address</StyledTableCell>
+                                    <StyledTableCell align="center">Delivery Date</StyledTableCell>
+                                    <StyledTableCell align="center">Suggested Price/Gallon</StyledTableCell>
+                                    <StyledTableCell align="center">Total Price</StyledTableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {quotes.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(quote => (
+                                    <StyledTableRow key={quote.order_id}>
+                                        <StyledTableCell align="center">{formatDate(quote.purchase_date)}</StyledTableCell>
+                                        <StyledTableCell align="center">{quote.gallons_amount}</StyledTableCell>
+                                        <StyledTableCell align="center">{quote.delivery_address}</StyledTableCell>
+                                        <StyledTableCell align="center">{formatDate(quote.delivery_date)}</StyledTableCell>
+                                        <StyledTableCell align="center">{parseFloat(quote.unit_cost).toFixed(2)}</StyledTableCell>
+                                        <StyledTableCell align="center">{parseFloat(quote.total_cost).toFixed(2)}</StyledTableCell>
+                                    </StyledTableRow>
+                                ))}
+                            </TableBody>
+                            {quotes.length === 0 && <p className="ps-2 m-auto">No History</p>}
+                        </Table>
+                    </TableContainer>
+                    {quotes.length > 0 && <TablePagination
+                        rowsPerPageOptions={[10, 25, 100]}
+                        component="div"
+                        count={quotes.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />}
+                </Paper>
             </>
         );
     }

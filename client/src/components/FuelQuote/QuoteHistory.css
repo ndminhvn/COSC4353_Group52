@@ -1,13 +1,27 @@
-.table {
-    margin: 0 auto;
-    border: 2px solid darkgray;
-    width: 85%;
-    text-align: center;
-}
-
-caption {
-    color: black;
+h1 {
+    color: rgb(49 49 49);
     font-family: 'Courier New', Courier, monospace;
     font-size: 25px;
     text-shadow: 1px 1px 2px lightgrey;
+    text-align: center;
+    padding-top: 10px;
+    font-weight: bold;
+}
+
+.MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows {
+    margin-bottom: 0px;
+}
+
+#bgImage {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    width: 100vw;
+    height: 90vh;
+    background-position: center;
+    background-repeat: no-repeat; 
+    background-size: cover; 
+    background-blend-mode:darken;
+
 }
