@@ -78,7 +78,6 @@ function ProfileForm() {
       setIsLoading(false);
     } catch (error) {
       setMessage(error.message.data);
-      // setMessage("Failed to fetch data. Check your connection...");
     }
   };
 
@@ -96,7 +95,6 @@ function ProfileForm() {
       }
     } catch (error) {
       setMessage(error.response.data);
-      //setMessage("Unable to update your profile. Please try again!")
     }
   };
 
@@ -165,7 +163,6 @@ function ProfileForm() {
               <Formik
                 initialValues={initialValues}
                 validationSchema={userSchema}
-                // enableReinitialize
                 onSubmit={handleSubmit}
               >
                 <Form>
