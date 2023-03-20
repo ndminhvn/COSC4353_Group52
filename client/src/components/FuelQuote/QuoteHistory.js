@@ -64,7 +64,8 @@ const QuoteHistory = () => {
             const res = await axios.get(`${BASE_URL}/history/${username}`);
             if (res.status === 201) {
                 const quoteHistory = res.data;
-                setQuotes(quoteHistory);
+                // reverse the order of history (showing the newest quote on top of the table)
+                setQuotes(quoteHistory.reverse());
             }
         } catch (error) {
             alert("Failed to fetch history");
@@ -121,7 +122,7 @@ const QuoteHistory = () => {
                                     </StyledTableRow>
                                 ))}
                             </TableBody>
-                            {quotes.length === 0 && <p className="ps-2 m-auto">No History</p>}
+                            {quotes.length === 0 && <caption className="text-center ps-2 m-auto">No History</caption>}
                         </Table>
                     </TableContainer>
                     {quotes.length > 0 && <TablePagination
