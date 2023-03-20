@@ -1,10 +1,10 @@
-import { React, useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { React, useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { BASE_URL } from '../../utils/constants.js';
 import axios from 'axios';
-import { getToken, removeToken } from '../../utils/useToken.js';
+import { getToken } from '../../utils/useToken.js';
 
-import './FuelQuoteForm.css'
+import './FuelQuoteForm.css';
 
 const getMinDeliveryDays = () => {
     let curDate = new Date();
@@ -97,7 +97,7 @@ const FuelQuoteForm = () => {
     }
 
     // fetch user profile
-    const fetchProfile = async () => {
+    const fetchProfile = useCallback(async () => {
         try {
             const res = await axios.get(`${BASE_URL}/account/${username}`);
             if (res.status === 200) {
@@ -108,26 +108,21 @@ const FuelQuoteForm = () => {
             alert("Failed to fetch data");
             console.log(error);
         }
-    };
+    }, [username, profile]);
+
+    // check form validity
+    const checkFormValidity = useCallback(() => {
+        if (gallons !== '' && selectedDate !== '') {
+            setQuoteFormValid(true);
+        } else {
+            setQuoteFormValid(false);
+        }
+    }, [gallons, selectedDate]);
 
     useEffect(() => {
-        if (!username) {
-            removeToken();
-            navigate('/login');
-            window.location.reload(true);
-        } else {
-            fetchProfile();
-
-            const checkFormValidity = () => {
-                if (gallons !== '' && selectedDate !== '') {
-                    setQuoteFormValid(true);
-                } else {
-                    setQuoteFormValid(false);
-                }
-            }
-            checkFormValidity();
-        }
-    }, [username, profile, fullDeliveryAddress, gallons, selectedDate, quoteFormValid, quoteValid, navigate]);
+        fetchProfile();
+        checkFormValidity();
+    }, [fetchProfile, checkFormValidity]);
 
     return (
         <div className='form-container'>
