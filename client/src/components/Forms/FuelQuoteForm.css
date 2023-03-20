@@ -1,20 +1,13 @@
 #quote-page {
+    position: relative;
     overflow: hidden;
     padding: 10px;
-    top: 10vh;
-}
-
-#bgImage {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    z-index: -1;
+    background: url('../../assets/pages-bg.jpg');
     width: 100vw;
-    height: 90vh;
+    min-height: 95vh;
     background-position: center;
-    background-repeat: no-repeat;
     background-size: cover;
-    background-blend-mode:darken;
+    background-repeat: no-repeat;
 }
 
 h1 {
@@ -86,7 +79,7 @@ button:disabled {
     box-shadow: 0px 0px 10px darkgrey;
     background-color: #e6e9edcc;
     overflow: hidden;
-    margin-bottom: auto;
+    margin-bottom: 15px;
     margin-right: 10px; 
     margin-left: 10px;
     padding-bottom: 10px;
@@ -101,9 +94,20 @@ button:disabled {
 .form-container {
     text-align: center;
     display: flex;
-    width: 55%;
+    flex-direction: column;
+    width: 95%;
     margin: auto;
     padding: 5px;
+}
+
+@media screen and (min-width: 900px) {
+    .container {
+        margin-bottom: auto;
+    }
+    .form-container {
+        flex-direction: row;
+        width: 55%;
+	}
 }
 
 .label {
