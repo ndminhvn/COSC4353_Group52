@@ -30,7 +30,7 @@ input:hover {
     background-color: #ffffffdb;
 }
 
-button {
+#quote-btn {
     color: black;
     border-radius: 30px;
     display: inline-block;
@@ -44,11 +44,11 @@ button {
     width: 100%;
 }
 
-button:hover {
+#quote-btn:hover {
     background-color: #95aee4;
 }
 
-button:disabled {
+#quote-btn:disabled {
     background-color: lightgrey;
     color: darkgrey;
 }

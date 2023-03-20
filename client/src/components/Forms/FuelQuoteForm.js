@@ -161,7 +161,7 @@ const FuelQuoteForm = () => {
                         value={fullDeliveryAddress}
                         readOnly
                     />
-                    <button type='submit' disabled={!quoteFormValid}>
+                    <button id='quote-btn' type='submit' disabled={!quoteFormValid}>
                         Request Quote
                     </button>
                 </form>
@@ -213,7 +213,7 @@ const FuelQuoteForm = () => {
                         readOnly className='form-control-plaintext'
                         style={{ 'padding': '0px', 'margin': '0px', 'textAlign': 'center' }}
                     />
-                    <button type='submit' disabled={!quoteValid}>
+                    <button id='quote-btn' type='submit' disabled={!quoteValid}>
                         Submit Quote
                     </button>
                 </form>
