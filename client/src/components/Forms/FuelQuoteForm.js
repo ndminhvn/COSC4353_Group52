@@ -101,7 +101,7 @@ const FuelQuoteForm = () => {
     const fetchProfile = async () => {
         try {
             const res = await axios.get(`${BASE_URL}/account/${username}`);
-            if (res.status === 201) {
+            if (res.status === 200) {
                 setProfile(Object.assign(profile, res.data));
                 setFullDeliveryAddress(`${profile.address1}, ${profile.city}, ${profile.state}, ${profile.zipcode}`);
             }
