@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { BASE_URL } from '../../utils/constants.js';
-import { getToken, removeToken } from '../../utils/useToken.js';
+import { getToken } from '../../utils/useToken.js';
 
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
@@ -59,7 +59,7 @@ const QuoteHistory = () => {
     };
 
     // fetch user quote history
-    const fetchHistory = async () => {
+    const fetchHistory = useCallback(async () => {
         try {
             const res = await axios.get(`${BASE_URL}/history/${username}`);
             if (res.status === 201) {
@@ -70,12 +70,11 @@ const QuoteHistory = () => {
             alert("Failed to fetch history");
             console.log(error);
         }
-    };
+    }, [username]);
 
     // check if user has logged in
     useEffect(() => {
         if (!username) {
-            removeToken();
             setMessage('Our system detected that you are not logged in yet. Redirecting to the login screen ...');
             setTimeout(() => {
                 navigate('/login', { replace: true });
@@ -84,7 +83,7 @@ const QuoteHistory = () => {
         } else {
             fetchHistory();
         }
-    }, [username, navigate]);
+    }, [username, navigate, fetchHistory]);
 
     if (!username) {
         return (
@@ -94,7 +93,6 @@ const QuoteHistory = () => {
         )
     }
     else {
-
         return (
             <div id='history'>
                 <h1>Fuel Quote History</h1>
