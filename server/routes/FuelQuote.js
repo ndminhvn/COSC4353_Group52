@@ -31,7 +31,7 @@ router.get("/", async (req, res) => {
 
             // Empty profile data handling
             for (let key in query) {
-                if (query[key] == null) {
+                if (query[key] == null && key !== "address2") {
                     return res.status(403).send("Client profile is missing");
                 }
             }
