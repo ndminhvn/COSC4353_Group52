@@ -127,7 +127,7 @@ const QuoteHistory = () => {
                         </Table>
                     </TableContainer>
                     {quotes.length > 0 && <TablePagination
-                        rowsPerPageOptions={[10, 25, 100]}
+                        rowsPerPageOptions={[10, 25, 50]}
                         component="div"
                         count={quotes.length}
                         rowsPerPage={rowsPerPage}
