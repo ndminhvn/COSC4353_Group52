@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { getToken } from "../../utils/useToken";
 import { BASE_URL } from "../../utils/constants.js";
 import { states } from "../../utils/states";
@@ -65,7 +65,7 @@ function ProfileForm() {
   const [message, setMessage] = useState();
 
   // fetch user profile
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const res = await axios.get(`${BASE_URL}/account/${username}`);
       // successful request
@@ -80,11 +80,11 @@ function ProfileForm() {
     } catch (error) {
       setMessage(error.message.data);
     }
-  };
+  },[userData, username]);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   // update user profile
   const updateUser = async (data) => {
@@ -92,6 +92,8 @@ function ProfileForm() {
       const res = await axios.put(`${BASE_URL}/account/${username}`, data);
       if (res.status === 201) {
         // console.log("new data", newProfile);
+        setMessage("Profile updated!");
+        setIsSubmitted(true);
         return res.data;
       }
     } catch (error) {
@@ -108,13 +110,13 @@ function ProfileForm() {
     zipcode: userData?.zipcode || "",
   };
 
-  const handleSubmit = async (values) => {
-    // Pass user input into update function to make PUT request
-    // const newProfile = await updateUser(values);
-    await updateUser(values);
-    setMessage("Profile updated!");
-    setIsSubmitted(true);
-  };
+  // const handleSubmit = async (values) => {
+  //   // Pass user input into update function to make PUT request
+  //   // const newProfile = await updateUser(values);
+  //   await updateUser(values);
+  //   setMessage("Profile updated!");
+  //   setIsSubmitted(true);
+  // };
 
   return (
     <ThemeProvider theme={theme}>
@@ -166,7 +168,7 @@ function ProfileForm() {
               <Formik
                 initialValues={initialValues}
                 validationSchema={userSchema}
-                onSubmit={handleSubmit}
+                onSubmit={updateUser}
               >
                 <Form>
                   <Grid container spacing={2}>
