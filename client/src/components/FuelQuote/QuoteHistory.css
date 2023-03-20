@@ -1,3 +1,16 @@
+#history {
+    position: relative;
+    overflow: hidden;
+    padding: 10px;
+    text-align: center;
+    background: url('../../assets/pages-bg.jpg');
+    width: 100vw;
+    height: 100vh;
+    background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
 h1 {
     color: rgb(49 49 49);
     font-family: 'Courier New', Courier, monospace;

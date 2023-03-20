@@ -96,7 +96,7 @@ const QuoteHistory = () => {
     else {
 
         return (
-            <>
+            <div id='history'>
                 <h1>Fuel Quote History</h1>
                 <Paper sx={{ width: '97%', margin: 'auto', overflow: 'hidden' }}>
                     <TableContainer>
@@ -136,7 +136,7 @@ const QuoteHistory = () => {
                         onRowsPerPageChange={handleChangeRowsPerPage}
                     />}
                 </Paper>
-            </>
+            </div>
         );
     }
 }
