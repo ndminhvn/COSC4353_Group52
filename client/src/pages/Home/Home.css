@@ -6,7 +6,7 @@
     text-align: center;
     background: url('../../assets/homepage-bg.png');
     width: 100vw;
-    height: 90vh;
+    min-height: 95vh;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
