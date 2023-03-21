@@ -1,14 +1,11 @@
-#bgImage {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  z-index: -1;
+#profile {
+  position: relative;
+  overflow: hidden;
+  padding: 10px;
+  background: url('../../assets/pages-bg.jpg');
   width: 100vw;
-  height: 90vh;
-  background-position: center; /* Center the image */
-  background-repeat: no-repeat; /* Do not repeat the image */
-  background-size: cover; /* Resize the background image to cover the entire container */
-  background-blend-mode:darken;
-  /* filter: blur(2px);
-  -webkit-filter: blur(2px); */
+  min-height: 100vh;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }

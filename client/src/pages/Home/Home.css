@@ -1,39 +1,39 @@
 #home {
+    /* border: 2px solid red; */
     position: relative;
     overflow: hidden;
-    /* border: 2px solid red; */
     padding: 10px;
     text-align: center;
-    top: 130px;
-    /* background: rgba(0, 0, 0, 0.3); */
+    background: url('../../assets/homepage-bg.png');
+    width: 100vw;
+    min-height: 95vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+    background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
 }
 
-#home-background {
+/* #home-background {
     position: fixed;
     right: 0;
     bottom: 0;
     z-index: -1;
     width: 100vw;
     height: 90vh;
-    background-position: center; /* Center the image */
-    background-repeat: no-repeat; /* Do not repeat the image */
-    background-size: cover; /* Resize the background image to cover the entire container */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
     background-blend-mode:darken;
-    /* filter: blur(2px);
-    -webkit-filter: blur(2px); */
-}
+} */
 
 h1 {
     color: white;
     font-family: 'Courier New', Courier, monospace;
     text-transform: uppercase;
     font-weight: 600;
-    text-align: center;
-}
-
-.btn-group {
-    /* border: 1px solid blue; */
-    margin-top: 75px;
 }
 
 #rate-btn {
@@ -46,21 +46,27 @@ h1 {
     color: rgb(34, 29, 29);
     font-weight: bolder;
     padding: 2.5px 24px;
-    margin-bottom: 6%;
-    font-size: 25px;
+    margin-bottom: 25vh;
+    font-size: 20px;
     letter-spacing: 0.3rem;
     cursor: pointer;
-    display: inline-flex;
+    /* display: inline-flex; */
     overflow: hidden;
     width: auto;
     max-width: 500px;
-    -webkit-transition: max-width 0.5s;
-    transition: max-width 0.5s;
+    /* -webkit-transition: max-width 0.5s ease-in-out; */
+    transition: max-width 0.5s ease-in-out !important;
+}
+
+@media screen and (min-width: 500px) {
+	#rate-btn {
+        font-size: 25px;
+	}
 }
 
 #rate-btn:hover {
-    /* width: 1em; */
-    max-width: 700px;
+    /* max-width: 700px; */
+    max-width: calc(500px + 2em);
     box-shadow: 5px 5px 10px #888888;
 }
 
@@ -72,4 +78,6 @@ h1 {
 #rate-btn:hover > #arrow-icon {
     display: inline;
     visibility: visible;
+    transition: margin-left 0.5s ease-in-out !important;
+    margin-left: 10px;
 }

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { BASE_URL } from '../../utils/constants.js';
-import { getToken, removeToken } from '../../utils/useToken.js';
+import { getToken } from '../../utils/useToken.js';
 
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
@@ -59,23 +59,23 @@ const QuoteHistory = () => {
     };
 
     // fetch user quote history
-    const fetchHistory = async () => {
+    const fetchHistory = useCallback(async () => {
         try {
             const res = await axios.get(`${BASE_URL}/history/${username}`);
             if (res.status === 201) {
                 const quoteHistory = res.data;
-                setQuotes(quoteHistory);
+                // reverse the order of history (showing the newest quote on top of the table)
+                setQuotes(quoteHistory.reverse());
             }
         } catch (error) {
             alert("Failed to fetch history");
             console.log(error);
         }
-    };
+    }, [username]);
 
     // check if user has logged in
     useEffect(() => {
         if (!username) {
-            removeToken();
             setMessage('Our system detected that you are not logged in yet. Redirecting to the login screen ...');
             setTimeout(() => {
                 navigate('/login', { replace: true });
@@ -84,7 +84,7 @@ const QuoteHistory = () => {
         } else {
             fetchHistory();
         }
-    }, [username, navigate]);
+    }, [username, navigate, fetchHistory]);
 
     if (!username) {
         return (
@@ -94,9 +94,8 @@ const QuoteHistory = () => {
         )
     }
     else {
-
         return (
-            <>
+            <div id='history'>
                 <h1>Fuel Quote History</h1>
                 <Paper sx={{ width: '97%', margin: 'auto', overflow: 'hidden' }}>
                     <TableContainer>
@@ -123,7 +122,7 @@ const QuoteHistory = () => {
                                     </StyledTableRow>
                                 ))}
                             </TableBody>
-                            {quotes.length === 0 && <p className="ps-2 m-auto">No History</p>}
+                            {quotes.length === 0 && <caption className="text-center ps-2 m-auto">No History</caption>}
                         </Table>
                     </TableContainer>
                     {quotes.length > 0 && <TablePagination
@@ -136,7 +135,7 @@ const QuoteHistory = () => {
                         onRowsPerPageChange={handleChangeRowsPerPage}
                     />}
                 </Paper>
-            </>
+            </div>
         );
     }
 }

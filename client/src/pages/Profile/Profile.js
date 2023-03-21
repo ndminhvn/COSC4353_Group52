@@ -1,10 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import { getToken } from '../../utils/useToken.js';
 import ProfileForm from '../../components/Forms/ProfileForm';
-import background from '../../assets/pages-bg.jpg';
-import "./Profile.css";
-
+import './Profile.css';
 
 const Profile = () => {
   const token = getToken();
@@ -31,9 +29,8 @@ const Profile = () => {
   }
   else {
     return (
-      <div>
-        <img src={background} alt='bgImage' id='bgImage' />
-            <ProfileForm />
+      <div id='profile'>
+        <ProfileForm />
       </div>
     );
   }

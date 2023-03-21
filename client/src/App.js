@@ -4,6 +4,7 @@ import Page404 from './components/404/Page404';
 // import './App.css';
 
 const Navbar = lazy(() => import('./components/Navbar/Navbar'));
+const ScrollTop = lazy(() => import('./components/ScrollTop/ScrollTop'));
 const Home = lazy(() => import('./pages/Home/Home'));
 const Login = lazy(() => import('./pages/Login/Login'));
 const QuoteHistory = lazy(() => import('./components/FuelQuote/QuoteHistory'));
@@ -14,6 +15,7 @@ const App = () => {
   return (
     <Router>
       <Suspense>
+        <ScrollTop />
         <Navbar />
         <Routes>
           <Route path='/' index element={<Home />} />

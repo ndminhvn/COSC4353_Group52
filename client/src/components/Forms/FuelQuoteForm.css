@@ -1,31 +1,3 @@
-#quote-page {
-    overflow: hidden;
-    padding: 10px;
-    top: 10vh;
-}
-
-#bgImage {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    z-index: -1;
-    width: 100vw;
-    height: 90vh;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-blend-mode:darken;
-}
-
-h1 {
-    color: rgb(49 49 49);
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 25px;
-    text-shadow: 1px 1px 2px lightgrey;
-    text-align: center;
-    font-weight: bold;
-}
-
 input, textarea {
     width: 100%;
     padding: 8px;
@@ -58,7 +30,7 @@ input:hover {
     background-color: #ffffffdb;
 }
 
-button {
+#quote-btn {
     color: black;
     border-radius: 30px;
     display: inline-block;
@@ -72,11 +44,11 @@ button {
     width: 100%;
 }
 
-button:hover {
+#quote-btn:hover {
     background-color: #95aee4;
 }
 
-button:disabled {
+#quote-btn:disabled {
     background-color: lightgrey;
     color: darkgrey;
 }
@@ -86,7 +58,7 @@ button:disabled {
     box-shadow: 0px 0px 10px darkgrey;
     background-color: #e6e9edcc;
     overflow: hidden;
-    margin-bottom: auto;
+    margin-bottom: 15px;
     margin-right: 10px; 
     margin-left: 10px;
     padding-bottom: 10px;
@@ -101,9 +73,20 @@ button:disabled {
 .form-container {
     text-align: center;
     display: flex;
-    width: 55%;
+    flex-direction: column;
+    width: 95%;
     margin: auto;
     padding: 5px;
+}
+
+@media screen and (min-width: 900px) {
+    .container {
+        margin-bottom: auto;
+    }
+    .form-container {
+        flex-direction: row;
+        width: 55%;
+	}
 }
 
 .label {
