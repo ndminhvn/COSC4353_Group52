@@ -15,6 +15,7 @@ import {
   Link
 } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import FileDownloadDoneIcon from "@mui/icons-material/FileDownloadDone";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -128,7 +129,7 @@ function ProfileForm() {
             bgcolor: "background.paper",
             boxShadow: 2,
             borderRadius: 2,
-            paddingX: 2,
+            paddingX: 4,
             paddingY: 4,
           }}
         >
@@ -139,6 +140,7 @@ function ProfileForm() {
             gutterBottom
             sx={{
               mt: 2,
+              mb: 2,
               fontWeight: "bold",
               fontFamily: "Playfair Display",
               letterSpacing: "1px",
@@ -146,17 +148,17 @@ function ProfileForm() {
           >
             My Profile
           </Typography>
-          {message && (
+          {message && isSubmitted && (
             <i
               style={{
                 color: message === "Profile updated!" ? "green" : "red",
               }}
             >
-              <p className="text-center">{message}</p>
+              <p> <CheckCircleIcon fontSize="small"/> {message}</p>
             </i>
           )}
 
-          <Box sx={{ m: 3 }}>
+          <Box sx={{ mt: 1, mb: 3 }}>
             {/* FORM STARTS */}
             {isLoading ? (
               <CircularProgress />

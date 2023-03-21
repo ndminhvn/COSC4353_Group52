@@ -1,7 +1,5 @@
 #quote-page {
-    position: relative;
     overflow: hidden;
-    /* border: 2px solid red; */
     padding: 10px;
     top: 10vh;
 }
@@ -20,11 +18,12 @@
 }
 
 h1 {
-    color: black;
+    color: rgb(49 49 49);
     font-family: 'Courier New', Courier, monospace;
     font-size: 25px;
     text-shadow: 1px 1px 2px lightgrey;
     text-align: center;
+    font-weight: bold;
 }
 
 input, textarea {
