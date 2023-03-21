@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
         gallons = Number(req.query.gallons);
 
         // Handle bad url paremeters
-        if (username == null || !(gallons > 100)) {
+        if (username == null || !(gallons >= 100)) {
             throw new Error({ message: "Invalid URL query" });
         }
 
@@ -31,7 +31,7 @@ router.get("/", async (req, res) => {
 
             // Empty profile data handling
             for (let key in query) {
-                if (query[key] == null) {
+                if (query[key] == null && key !== "address2") {
                     return res.status(403).send("Client profile is missing");
                 }
             }
