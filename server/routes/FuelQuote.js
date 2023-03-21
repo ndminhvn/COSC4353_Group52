@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
         gallons = Number(req.query.gallons);
 
         // Handle bad url paremeters
-        if (username == null || !(gallons > 100)) {
+        if (username == null || !(gallons >= 100)) {
             throw new Error({ message: "Invalid URL query" });
         }
 
