@@ -5,7 +5,7 @@ require("dotenv").config();
 // Connect to database
 pool.connect((err) => {
     if (err) throw err;
-    else console.log("Connected to localhost database"); 
+    else console.log("Connected to database"); 
 
 })
 

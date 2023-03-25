@@ -9,7 +9,6 @@
 <!-- ## <p align="center"> [LIVE WEB APP] </p> -->
 
 ## Description
-Will fill in the description
 > [Project detail document](/doc/Project.pdf) - Will update later with requirements
 ## Technology Stack
 - Frontend: [ReactJS](https://reactjs.org/)
@@ -23,6 +22,7 @@ Will fill in the description
 
 ## Demo
 - Walk-through video: [link video if we make one]
+- Screenshots: (will provide later)
 ## Installation
 - Requirements:
   - Git
@@ -45,10 +45,10 @@ Will fill in the description
     - Fill in the `.env` file
     - Start server: `npm start`
     - Start unit-test: `npm test`
-    - Database:
-      - Install Postgres 15 on your computer and start the database: `https://www.postgresql.org/download/`
-      - pgAdmin as database manager: `https://www.pgadmin.org/download/`
-        - Register a new server, make sure the `name` in general and `hostname` are the same, everything else can stay the same.
-        - Create the server.
-        - Go to your `.env` file and enter in your local settings.
-      - If successfully connected, prompt will display during `npm start`
+  - Database:
+    - Install Postgres 15 on your computer and start the database: https://www.postgresql.org/download/
+    - pgAdmin as database manager: https://www.pgadmin.org/download/
+      - Register a new server (specify the connection - this will be used in `server/.env` file)
+      - Create the server.
+      - Go to your `server/.env` file and enter in your database connection.
+    - If successfully connected, prompt will display during `npm start` (backend)
