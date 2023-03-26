@@ -7,7 +7,7 @@ router.get("/:username", async (req, res) => {
     try {
         const { username } = req.params;
 
-        if(username == null) {
+        if(username == "null" || username == null) {
             throw new Error({ message: "Invalid URL query" });
         }
 
