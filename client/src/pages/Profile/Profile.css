@@ -1,0 +1,11 @@
+#profile {
+  position: relative;
+  overflow: hidden;
+  padding: 10px;
+  background: url('../../assets/pages-bg.jpg');
+  width: 100vw;
+  min-height: 100vh;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}

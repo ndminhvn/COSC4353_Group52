@@ -1,0 +1,106 @@
+h1 {
+    color: rgb(49 49 49);
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 25px;
+    text-shadow: 1px 1px 2px lightgrey;
+    text-align: center;
+    font-weight: bold;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 8px;
+    border-radius: 11px;
+    display: inline-block;
+    box-sizing: border-box;
+    outline: none;
+    border: none;
+}
+
+textarea {
+    text-align: center;
+    word-wrap: soft;
+    background-color: #d4d6d8b4;
+    overflow: auto;
+}
+
+input:focus,
+textarea:focus
+{
+    border: 2px solid #7a7a7a;
+}
+
+textarea:hover {
+    transition: all 0.3s ease;
+}
+
+input:hover {
+    transition: all 0.3s ease;
+    background-color: #ffffffdb;
+}
+
+#quote-btn {
+    color: black;
+    border-radius: 30px;
+    display: inline-block;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #bbc4e2;
+    font-size: 15px;
+    font-weight: bold;
+    border: #99aae3;
+    transition: all .5s;
+    width: 100%;
+}
+
+#quote-btn:hover {
+    background-color: #95aee4;
+}
+
+#quote-btn:disabled {
+    background-color: lightgrey;
+    color: darkgrey;
+}
+
+.container {
+    align-self: center;
+    box-shadow: 0px 0px 10px darkgrey;
+    background-color: #e6e9edcc;
+    overflow: hidden;
+    margin-bottom: 15px;
+    margin-right: 10px; 
+    margin-left: 10px;
+    padding-bottom: 10px;
+    border-radius: 10px;
+}
+
+.container:hover {
+    box-shadow: 2px 2px 15px rgb(89, 89, 89);
+    transition: all .2s;
+}
+
+.form-container {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+    margin: auto;
+    padding: 5px;
+}
+
+@media screen and (min-width: 900px) {
+    .container {
+        margin-bottom: auto;
+    }
+    .form-container {
+        flex-direction: row;
+        width: 55%;
+	}
+}
+
+.label {
+    padding: 11px 11px 11px 0;
+    font-weight: bold;
+    font-family:Arial, Helvetica, sans-serif;
+    color: black;
+}

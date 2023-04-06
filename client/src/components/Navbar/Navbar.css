@@ -1,0 +1,76 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+
+.main-nav {
+    position: relative;
+	/* border: 2px solid green; */
+    background-color: rgb(255, 255, 255);
+    width: 100%;
+    border-bottom: 1em;
+	/* height: 10vh; */
+    /* box-shadow: 5px 5px 10px #ccc; */
+}
+
+.App-logo {
+	height: 70px;
+    width: auto;
+}
+
+@media screen and (min-width: 300px) {
+	.App-logo {
+		height: 50px;
+		width: auto;
+	}
+}
+
+@media screen and (min-width: 992px) {
+    .nav-link {
+        right: 6vw !important;
+        margin-left: 20px !important;
+    }
+}
+
+.fa-bars:before {
+	color: var(--color-on-background) !important;
+}
+
+.navbar-toggler {
+	padding: 0.5rem;
+	border: none !important;
+}
+
+.navbar-toggler:focus {
+	outline: none;
+}
+
+.nav-link {
+    /* border: solid 1px red; */
+    position: relative;
+    /* font-family: 'Courier New', Courier, monospace; */
+    font-family: 'Playfair Display', serif;
+    font-weight: 500;
+    font-size: 23px;
+    overflow: hidden;
+    display: block;
+}
+
+.nav-link:hover {
+    font-weight:bold;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0.1em;
+    background-color: rgb(0, 0, 0);
+    opacity: 1;
+    transition: opacity 300ms, transform 300ms;
+    transform: translate3d(-100%, 0, 0);
+}
+
+.nav-link:hover::after, #nav-link:focus::after {
+    transform: translate3d(0, 0, 0);
+}

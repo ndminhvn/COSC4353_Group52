@@ -1,0 +1,24 @@
+@media screen and (max-width: 700px) {
+	#login-box {
+        width: 75%;
+	}
+}
+
+@media screen and (max-width: 500px) {
+	#login-box {
+        width: 100%;
+	}
+}
+
+/* #input-field {
+    border-radius: 24px;
+} */
+
+.login-btn {
+    font-weight: bold;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    height: 3rem;
+    margin-top: 2em;
+    /* border-radius: 24px; */
+}
