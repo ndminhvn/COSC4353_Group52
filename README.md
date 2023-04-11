@@ -48,7 +48,8 @@
   - Database:
     - Install Postgres 15 on your computer and start the database: https://www.postgresql.org/download/
     - pgAdmin as database manager: https://www.pgadmin.org/download/
-      - Register a new server (specify the connection - this will be used in `server/.env` file)
-      - Create the server.
-      - Go to your `server/.env` file and enter in your database connection.
+      - Register a new server.
+      - Create a new database.
+      - Import the tables using `server/database/dbSchema.sql`.
+      - Go to your `server/.env` file and fill in your database connection.
     - If successfully connected, prompt will display during `npm start` (backend)
