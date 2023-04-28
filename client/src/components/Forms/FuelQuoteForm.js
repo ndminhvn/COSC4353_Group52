@@ -23,6 +23,7 @@ const FuelQuoteForm = () => {
   const [fullDeliveryAddress, setFullDeliveryAddress] = useState("");
   const [message, setMessage] = useState("");
   const [missingValues, setMissingValues] = useState(false);
+  const [errorDateMessage, setErrorDateMessage] = useState("");
 
   const [profile, setProfile] = useState({
     address1: "",
@@ -44,11 +45,12 @@ const FuelQuoteForm = () => {
 
     if ([6, 0].includes(day)) {
       e.preventDefault();
-      e.target.value = "";
-      alert("Weekends not allowed");
+      setErrorDateMessage("Weekends are not allowed. Please select a weekday.");
+      setSelectedDate("");
+    } else {
+      setErrorDateMessage("");
+      setSelectedDate(e.target.value);
     }
-
-    setSelectedDate(e.target.value);
   };
 
   const onGetQuote = async (e) => {
@@ -187,6 +189,7 @@ const FuelQuoteForm = () => {
                 onChange={(e) => onSelectedDate(e)}
                 required
               />
+              {errorDateMessage && <p style={{ color: "red" }}>{errorDateMessage}</p>}
               <label className="label" htmlFor="staticFullAddress">
                 Delivery Address
               </label>
